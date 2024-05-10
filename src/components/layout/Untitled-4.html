@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Search</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-color: #282c34; /* 黑色背景 */
+        color: #ffffff; /* 白色文字 */
+    }
+    .container {
+        width: 80%;
+        margin: 50px auto;
+        text-align: center;
+    }
+    .form {
+        background-color: #6a0dad; /* 紫色背景 */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+    .form label {
+        display: block;
+        margin-bottom: 10px;
+    }
+    .form input[type="text"],
+    .form input[type="date"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: none;
+        border-radius: 5px;
+    }
+    .btn {
+        padding: 10px 20px;
+        background-color: #b814e0; /* 浅紫色按钮 */
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .btn:hover {
+        background-color: #9719b9; /* 深紫色按钮 */
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="form">
+        <h2>Order Search</h2>
+        <form action="#" method="get" id="order-search-form">
+            <label for="order-id">Order ID</label>
+            <input type="text" id="order-id" name="order-id">
+            <label for="customer-name">Customer Name</label>
+            <input type="text" id="customer-name" name="customer-name">
+            <label for="order-date">Order Date</label>
+            <input type="date" id="order-date" name="order-date">
+            <button type="submit" class="btn">Search</button>
+        </form>
+    </div>
+    <div id="order-results">
+        <!-- 订单查询结果将在此展示 -->
+    </div>
+</div>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Search</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-color: #282c34; /* 黑色背景 */
+        color: #ffffff; /* 白色文字 */
+    }
+    .container {
+        width: 80%;
+        margin: 50px auto;
+        text-align: center;
+    }
+    .form {
+        background-color: #6a0dad; /* 紫色背景 */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+    .form label {
+        display: block;
+        margin-bottom: 10px;
+    }
+    .form input[type="text"],
+    .form input[type="date"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: none;
+        border-radius: 5px;
+    }
+    .btn {
+        padding: 10px 20px;
+        background-color: #b814e0; /* 浅紫色按钮 */
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .btn:hover {
+        background-color: #9719b9; /* 深紫色按钮 */
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="form">
+        <h2>Order Search</h2>
+        <form action="#" method="get" id="order-search-form">
+            <label for="order-id">Order ID</label>
+            <input type="text" id="order-id" name="order-id">
+            <label for="customer-name">Customer Name</label>
+            <input type="text" id="customer-name" name="customer-name">
+            <label for="order-date">Order Date</label>
+            <input type="date" id="order-date" name="order-date">
+            <button type="submit" class="btn">Search</button>
+        </form>
+    </div>
+    <div id="order-results">
+        <!-- 订单查询结果将在此展示 -->
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1061 @@
+// #region common
+.input-field {
+  padding: 0 0.75rem;
+  width: 100%;
+  height: 2.5rem;
+  border-radius: 0.125rem;
+  font-size: 1rem;
+  font-family:
+    PingFangSC-Regular,
+    PingFang SC;
+  font-weight: 400;
+  box-shadow: none !important;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.flex-center {
+  .flex-mode;
+}
+
+section .hover-text {
+  .hover-text;
+}
+
+section .hover-text-icon {
+  .hover-icon {
+    display: none;
+  }
+
+  &:hover {
+    img {
+      display: none;
+    }
+
+    .hover-icon {
+      display: block;
+    }
+
+    .hover-text {
+      color: @color-primary;
+    }
+  }
+}
+
+// cep: img + value
+.account-number {
+  .cep-img-value();
+}
+
+.hover-icon-opacity {
+  filter: opacity(0.85);
+
+  &:hover {
+    filter: opacity(1);
+  }
+}
+
+.hover-icon-opacity-wrapper {
+  .icon-o {
+    filter: opacity(0.85);
+  }
+
+  &:hover {
+    .icon-o {
+      filter: opacity(1);
+    }
+  }
+}
+
+.hover-icon-display-wrapper {
+  .hover-icon {
+    display: none;
+  }
+
+  &:hover {
+    .icon-d {
+      display: none;
+    }
+
+    .hover-icon {
+      display: inline;
+    }
+  }
+}
+
+.table-empty-text {
+  .flex-mode(column);
+  padding: 1rem 0;
+  height: 100%;
+
+  img {
+    margin-bottom: 1.5rem;
+  }
+
+  .text-content {
+    font-size: 1rem;
+    font-family:
+      PingFangSC-Regular,
+      PingFang SC;
+    font-weight: 400;
+    color: @color-text-secondary;
+    line-height: 1.375rem;
+  }
+}
+
+.warning-alert {
+  .flex-mode(row, flex-start, flex-start);
+  padding: 0.5rem 1rem;
+  background: #2b2111;
+  border-radius: 0.125rem;
+  border: 0.0625rem solid #594214;
+
+  img {
+    margin-right: 0.4375rem;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  span {
+    font-size: 0.875rem;
+    font-family:
+      PingFangSC-Regular,
+      PingFang SC;
+    font-weight: 400;
+    color: @color-text-secondary;
+    line-height: 1.375rem;
+  }
+}
+
+.is-mobile {
+  .warning-alert {
+    align-items: flex-start;
+    height: auto;
+
+    > img {
+      margin-top: 0.1875rem;
+    }
+  }
+}
+// #endregion
+
+// 解释权
+.explain-right {
+  .flex-mode;
+
+  &::before,
+  &::after {
+    content: '';
+    width: 5.625rem;
+    height: 0.0625rem;
+    background: linear-gradient(270deg, rgba(216, 216, 216, 0.65) 0%, rgba(255, 255, 255, 0) 100%);
+  }
+
+  &::after {
+    background: linear-gradient(270deg, rgba(255, 255, 255, 0) 0%, rgba(216, 216, 216, 0.65) 100%);
+  }
+
+  span {
+    margin: 0 0.375rem;
+    height: 1.5rem;
+    font-size: 0.75rem;
+    font-family:
+      PingFangSC-Regular,
+      PingFang SC;
+    font-weight: 400;
+    color: @color-text-secondary;
+    line-height: 1.5rem;
+    white-space: nowrap;
+  }
+}
+
+// 选择 aigc 应用样式：小标题、计费方式、购买时长、底部配置费用
+.common-aigc-choose-wrapper {
+  .little-title {
+    position: relative;
+    .flex-mode(row, flex-start, center);
+    padding-left: 0.625rem;
+    margin: 1.5rem 0 0.75rem;
+    font-size: 1rem;
+    font-family:
+      PingFangSC-Medium,
+      PingFang SC;
+    font-weight: 500;
+    color: #ffffff;
+    line-height: 1.375rem;
+
+    &.not-margin-bottom {
+      margin-bottom: 0;
+    }
+
+    &:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      margin-right: 0.5rem;
+      width: 0.125rem;
+      height: 1rem;
+      background: #8e50ff;
+    }
+
+    .tip-png {
+      margin-left: 0.375rem;
+    }
+  }
+
+  .tip-png {
+    .flex-mode;
+    width: 0.875rem;
+    height: 0.875rem;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .ant-select.base-select {
+    width: 100%;
+
+    .ant-select-selector {
+      height: 3.3125rem;
+
+      .ant-select-selection-placeholder,
+      .ant-select-selection-item {
+        .flex-mode(row, flex-start);
+        font-size: inherit;
+      }
+    }
+
+    .ant-select-dropdown {
+      background-color: #292929;
+
+      .ant-select-item {
+        padding: 0 1rem;
+        line-height: 3.25rem;
+        color: @color-text-secondary;
+
+        .discount {
+          opacity: 0.65;
+        }
+
+        // &:hover,
+        &.ant-select-item-option-active {
+          color: #ffffff;
+
+          .discount {
+            opacity: 1;
+          }
+        }
+      }
+
+      .ant-select-item-option-content {
+        .flex-mode(row, flex-start);
+      }
+    }
+
+    .ant-select-selector {
+      padding: 0 1rem;
+      color: #ffffff;
+    }
+
+    .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
+      background-color: #3c3c3c;
+    }
+  }
+
+  // 折扣
+  .discount {
+    .flex-mode();
+    margin-left: 0.5rem;
+    width: 3.5rem;
+    height: 1.25rem;
+    background: linear-gradient(225deg, #c13aea 0%, @color-primary 100%);
+    border-radius: 0.8125rem;
+    font-size: 0.875rem;
+    font-family:
+      PingFangSC-Regular,
+      PingFang SC;
+    font-weight: 400;
+    color: #ffffff;
+    line-height: 1.25rem;
+
+    &-month {
+      background: linear-gradient(225deg, #eac13a 1%, #ea3aac 100%);
+    }
+  }
+
+  .charge-mode {
+    &-select {
+      width: 100%;
+
+      .fire-img {
+        width: 1rem;
+        height: 1.125rem;
+        margin-left: 0.5rem;
+      }
+    }
+    .tip-png {
+      margin-left: 1rem;
+    }
+  }
+
+  .purchase-duration {
+    width: 100%;
+    .flex-mode(row, flex-start);
+
+    .check-box {
+      margin-left: 1.5rem;
+    }
+
+    .automatic-renewal {
+      margin: 0 0.5rem;
+      font-size: 0.875rem;
+      font-family:
+        PingFangSC-Regular,
+        PingFang SC;
+      font-weight: 400;
+      color: @color-text;
+      line-height: 1.25rem;
+      cursor: pointer;
+    }
+
+    &-select {
+      flex: 1;
+    }
+  }
+
+  .common-content-container {
+    padding: 0 1.5rem 1.5rem;
+    overflow-y: auto;
+  }
+
+  .buy-now-container {
+    .flex-mode(row);
+    padding: 0 1.5rem;
+    width: 100%;
+    height: 7.5rem;
+    border-top: 0.0625rem solid #404040;
+
+    .show-price {
+      flex: 1;
+      .flex-mode(column, center, flex-start);
+      font-size: 0.875rem;
+      font-family:
+        PingFangSC-Regular,
+        PingFang SC;
+      font-weight: 400;
+      color: @color-text-secondary;
+
+      .title {
+        font-size: 1rem;
+        color: #ffffff;
+        line-height: 1.375rem;
+      }
+
+      .red {
+        color: #ff4646;
+      }
+
+      .cost {
+        .flex-mode(row, flex-start);
+        flex-wrap: wrap;
+
+        > span {
+          white-space: nowrap;
+        }
+
+        .probably-text {
+          margin-right: 0.3125rem;
+        }
+
+        > img {
+          height: 1.5rem;
+          width: 1.5rem;
+        }
+
+        .tips {
+          .flex-mode;
+          margin-left: 0.25rem;
+          height: 0.875rem;
+          width: 0.875rem;
+
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        .cep-num {
+          margin: 0 0.25rem;
+          line-height: 1;
+          font-size: 1.625rem;
+          font-weight: 500;
+        }
+
+        .price-all {
+          margin-left: 0.5rem;
+        }
+
+        .rmb {
+          margin-left: 0.5rem;
+        }
+
+        .discount {
+          margin-left: 0.25rem;
+        }
+      }
+
+      .balance {
+        .flex-mode(row, flex-start, center);
+        margin-top: 1rem;
+
+        > div {
+          .flex-mode();
+          font-size: 1rem;
+          font-family:
+            PingFangSC-Regular,
+            PingFang SC;
+          font-weight: 400;
+          line-height: 1.375rem;
+          margin-left: 0.75rem;
+          .hover-text;
+
+          > img {
+            margin-left: 0.25rem;
+            height: 0.75rem;
+            width: 0.75rem;
+          }
+
+          > span {
+            white-space: nowrap;
+          }
+        }
+      }
+    }
+
+    > Button {
+      width: 9.375rem;
+      height: 3.125rem;
+      font-size: 1rem;
+      font-family:
+        PingFangSC-Medium,
+        PingFang SC;
+      font-weight: 500;
+      color: #ffffff;
+      line-height: 1.5rem;
+    }
+  }
+}
+
+.is-mobile {
+  .common-aigc-choose-wrapper {
+    .common-content-container {
+      height: calc(100% - 12.375rem);
+    }
+
+    .buy-now-container {
+      background: #313131;
+      height: 12.375rem;
+      flex-direction: column;
+      align-items: flex-start;
+      .show-price {
+        flex: inherit;
+
+        .cost {
+          justify-content: flex-start;
+
+          .cep-num {
+            line-height: 2.3125rem;
+          }
+
+          .rmb {
+            line-height: 1.25rem;
+          }
+
+          .discount {
+            margin-left: 0.75rem;
+            font-size: 0.875rem;
+          }
+        }
+
+        .balance {
+          margin-top: 0.625rem;
+        }
+      }
+
+      > Button {
+        margin-top: 0.75rem;
+        width: 100%;
+        height: 2.5rem;
+        border-radius: 0.3125rem;
+      }
+    }
+  }
+}
+
+.commom-aigc-tooltip-title {
+  p {
+    font-size: 0.875rem;
+    line-height: 1.375rem;
+  }
+}
+
+//#region antdv: change style
+.not-show-btn-outline .ant-btn:not(:disabled):focus-visible,
+.ant-modal .ant-btn:not(:disabled):focus-visible {
+  outline: none;
+}
+
+.input-field.ant-input-affix-wrapper {
+  > input.ant-input:hover,
+  > input.ant-input:focus {
+    box-shadow: 0 0 0px 1000px @color-bg-container inset !important;
+  }
+}
+
+.ant-message-notice {
+  .ant-message-info {
+    .anticon {
+      color: #4087e0;
+    }
+  }
+
+  .ant-message-error {
+    .anticon {
+      color: #e04041;
+    }
+  }
+
+  .ant-message-notice-content {
+    background: #292929;
+    box-shadow: @box-shadow !important;
+  }
+}
+
+.ant-modal-root {
+  .ant-modal {
+    .ant-modal-header,
+    .ant-modal-content {
+      background-color: @color-bg-secondary;
+    }
+
+    .ant-modal-header {
+      padding: 0;
+      border-bottom: none;
+    }
+  }
+}
+
+.ant-drawer {
+  .extra-close-icon {
+    .flex-mode;
+    cursor: pointer;
+
+    img {
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+
+  .ant-drawer-content {
+    .ant-drawer-title {
+      font-size: 1rem;
+    }
+  }
+}
+
+.ant-drawer.drawer-layout {
+  z-index: 999;
+
+  .ant-drawer-mask {
+    -webkit-backdrop-filter: blur(0.3125rem);
+    backdrop-filter: blur(0.3125rem);
+  }
+}
+
+.primary-slider.ant-slider {
+  .ant-slider-rail,
+  .ant-slider-track,
+  .ant-slider-step {
+    height: 0.5rem;
+  }
+
+  .ant-slider-rail {
+    border-radius: 0.25rem;
+  }
+
+  .ant-slider-track {
+    background: #8e50ff;
+    border-radius: 0.25rem;
+  }
+
+  .ant-slider-handle {
+    width: 1rem;
+    height: 1rem;
+    inset-block-start: 0;
+
+    &::after {
+      width: 100%;
+      height: 100%;
+      background: #8e50ff;
+    }
+
+    &:focus::after,
+    &:active::after,
+    &:hover::after {
+      width: calc(100% + 0.125rem);
+      height: calc(100% + 0.125rem);
+    }
+  }
+}
+
+.ant-select-single:not(.ant-select-customize-input).select-field {
+  width: 8.75rem;
+  height: 2.5rem;
+
+  &.not-set-background {
+    .ant-select-selector {
+      background: none;
+    }
+  }
+
+  .ant-select-selector {
+    height: 100%;
+    font-size: inherit;
+    // background: #f8f9fa;
+    border-radius: 0.1875rem 0rem 0rem 0.1875rem;
+
+    .ant-select-selection-search {
+      position: absolute;
+    }
+
+    .ant-select-selection-placeholder {
+      .flex-mode(row, flex-start);
+    }
+
+    .ant-select-selection-item {
+      color: @color-text;
+      .flex-mode(row, flex-start);
+    }
+  }
+
+  .ant-select-arrow {
+    color: @color-text;
+  }
+
+  &:hover {
+    .ant-select-selection-item {
+      color: #ffffff;
+    }
+
+    .ant-select-arrow {
+      color: #ffffff;
+    }
+  }
+}
+
+// 分页
+.main-container {
+  .ant-picker {
+    .ant-picker-input > input {
+      font-size: inherit;
+      font-family:
+        PingFangSC-Regular,
+        PingFang SC;
+      font-weight: 400;
+    }
+
+    .ant-picker-range-separator {
+      .ant-picker-separator {
+        color: inherit;
+      }
+    }
+  }
+
+  .ant-pagination {
+    .ant-pagination-prev,
+    .ant-pagination-item,
+    .ant-pagination-next {
+      min-width: 2rem;
+      height: 2rem;
+    }
+
+    .ant-pagination-item-link {
+      color: @color-text-secondary !important;
+    }
+
+    .ant-pagination-item-active,
+    .ant-pagination-item-active:hover {
+      background: @color-primary;
+      border: unset;
+
+      a {
+        color: #ffffff;
+      }
+    }
+
+    .ant-pagination-options {
+      .ant-select {
+        font-size: inherit;
+
+        .ant-select-selector {
+          font-size: inherit;
+        }
+
+        .ant-select-dropdown {
+          font-size: inherit;
+
+          .ant-select-item {
+            font-size: inherit;
+          }
+        }
+      }
+    }
+  }
+}
+
+.ant-form {
+  .ant-form-item {
+    .ant-form-item-explain,
+    .ant-form-item-control {
+      font-size: 0.875rem;
+    }
+  }
+}
+
+// h5 适配
+.is-mobile {
+  // 滚动条
+  ::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  .ant-form-item {
+    .ant-form-item-explain,
+    .ant-form-item-control {
+      font-size: 0.75rem;
+    }
+  }
+
+  .hover-icon-opacity {
+    filter: opacity(1);
+  }
+
+  .hover-icon-opacity-wrapper {
+    .icon-o {
+      filter: opacity(1);
+    }
+  }
+
+  .hover-icon-display-wrapper {
+    &:hover {
+      .icon-d {
+        display: inline;
+      }
+
+      .hover-icon {
+        display: none;
+      }
+    }
+  }
+
+  .wap-title {
+    font-size: 1rem;
+    font-family:
+      PingFangSC-Medium,
+      PingFang SC;
+    font-weight: 500;
+    color: #ffffff;
+    line-height: 1.375rem;
+  }
+
+  .close-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .ant-drawer .ant-drawer-header,
+  .close-icon-header {
+    padding: 0.625rem 1.5rem 0.75rem;
+    border-bottom: none;
+    box-shadow: 0rem 0.0625rem 0rem 0rem rgba(255, 255, 255, 0.15);
+    z-index: 200;
+  }
+
+  // 抽屉
+  .ant-drawer {
+    .ant-drawer-body {
+      padding: 1.5rem;
+    }
+
+    .extra-close-icon {
+      img {
+        width: 1.25rem;
+        height: 1.25rem;
+      }
+    }
+  }
+
+  // 分页
+  .main-container .ant-pagination {
+    font-size: 0.75rem;
+
+    > li {
+      width: fit-content;
+      min-width: 1.75rem;
+      height: 1.75rem;
+      line-height: 1.625rem;
+    }
+
+    .ant-pagination-jump-prev,
+    .ant-pagination-jump-next {
+      .ant-pagination-item-ellipsis {
+        letter-spacing: 0rem;
+        text-indent: 0rem;
+        overflow: hidden;
+      }
+    }
+
+    .ant-pagination-options {
+      .ant-select {
+        .ant-select-selector {
+          height: 1.75rem;
+          line-height: 1.625rem;
+
+          .ant-select-selection-item {
+            line-height: 1.625rem;
+          }
+        }
+      }
+    }
+  }
+
+  .ant-message-notice {
+    font-size: 0.875rem;
+  }
+
+  div.table-empty-text {
+    padding: 0;
+
+    img {
+      margin-bottom: 1rem;
+    }
+
+    // 覆盖 empty-text 写的 img 样式
+    &.empty-text {
+      img {
+        width: 4rem;
+        height: auto;
+      }
+    }
+
+    .text-content {
+      font-size: 0.875rem;
+    }
+  }
+}
+//#endregion
+
+//#region activity
+.common-activity {
+  height: 100%;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 0rem;
+    height: 0rem;
+  }
+
+  &__content {
+    position: relative;
+    z-index: 1;
+    .flex-mode(column);
+    padding: 0 0 3rem;
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+
+    &:not(.show-content) {
+      *:not(.bg) {
+        opacity: 0;
+      }
+    }
+
+    .bg {
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
+  }
+}
+
+body:not(.is-mobile) {
+  .hover-transform-wrapper {
+    position: relative;
+    -webkit-perspective: 15rem;
+    perspective: 15rem;
+    overflow: hidden;
+
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform-origin: 50% 50% calc(-100 / 1920 * 100vw);
+      transition: all 0.3s;
+
+      &.icon-t {
+        transform: rotateX(0deg);
+      }
+
+      &.hover-icon {
+        transform: rotateX(85deg);
+      }
+    }
+
+    &:hover {
+      .icon-t {
+        transform: rotateX(-85deg);
+      }
+
+      .hover-icon {
+        transform: rotateX(0deg);
+      }
+    }
+  }
+}
+// #endregion
+
+//#region modal content
+.contact-modal-content {
+  padding: 1.25rem 1.5rem 1.5rem;
+  text-align: center;
+
+  h4 {
+    font-size: 1rem;
+    font-family:
+      PingFangSC,
+      PingFang SC;
+    font-weight: 500;
+    color: #ffffff;
+    line-height: 1.375rem;
+  }
+
+  img {
+    margin: 1.5rem 0;
+    width: 10.375rem;
+    height: 10.375rem;
+  }
+
+  p {
+    // height: 1.5625rem;
+    font-size: 1rem;
+    font-family:
+      PingFangSC,
+      PingFang SC;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 1.5rem;
+    white-space: nowrap;
+  }
+}
+
+.btns-modal-content {
+  padding: 1.5rem;
+
+  p:not(.warning) {
+    font-family:
+      PingFangSC,
+      PingFang SC;
+    font-weight: 400;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.25rem;
+    text-align: center;
+    font-style: normal;
+  }
+
+  .warning {
+    .flex-mode(row, flex-start, flex-start);
+    gap: 0.5rem;
+
+    &.mt-12 {
+      margin-bottom: 0.75rem;
+    }
+
+    img {
+      width: 0.875rem;
+    }
+
+    span {
+      font-size: 0.875rem;
+      font-family:
+        PingFangSC-Regular,
+        PingFang SC;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.25rem;
+      text-align: justify;
+    }
+  }
+
+  .btns {
+    .flex-mode;
+    margin-top: 1.5rem;
+    gap: 0.75rem;
+
+    button {
+      flex: 1;
+      height: 2.5rem;
+      font-family:
+        PingFangSC,
+        PingFang SC;
+      font-weight: 400;
+      color: #ffffff;
+      text-align: center;
+      font-style: normal;
+    }
+  }
+}
+
+.is-mobile {
+  .contact-modal-content {
+    padding: 0.75rem 1rem 1rem;
+
+    h4 {
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
+
+    img {
+      margin: 1rem 0;
+      width: 9.75rem;
+      height: 9.75rem;
+    }
+
+    p {
+      height: 1.125rem;
+      font-size: 0.75rem;
+      line-height: 1.125rem;
+    }
+  }
+
+  .btns-modal-content {
+    padding: 1rem;
+
+    span {
+      font-size: 0.75rem;
+    }
+
+    .btns {
+      gap: 1rem 0.8125rem;
+      margin-top: 1rem;
+    }
+  }
+}
+// #endregion

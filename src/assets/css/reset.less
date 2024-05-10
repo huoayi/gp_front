@@ -1,0 +1,227 @@
+html,
+body {
+  height: 100%;
+  font-family:
+    PingFangSC-Medium,
+    PingFang SC,
+    'Microsoft YaHei',
+    sans-serif,
+    'Helvetica Neue',
+    Helvetica,
+    Arial,
+    '黑体',
+    '宋体',
+    Arial;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-size: 1rem;
+  color: @color-text;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+}
+
+/* 重置各标签的默认样式 */
+a,
+body,
+center,
+cite,
+code,
+dd,
+del,
+div,
+dl,
+dt,
+em,
+fieldset,
+figcaption,
+figure,
+footer,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+header,
+hr,
+html,
+img,
+input,
+label,
+legend,
+li,
+mark,
+ol,
+p,
+section,
+span,
+textarea,
+time,
+td,
+th,
+ul {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  font-style: normal;
+  box-sizing: border-box;
+  /*  自动换行 */
+  word-wrap: break-word;
+  /*  强制英文单词断行 */
+  word-break: break-all;
+}
+
+body {
+  ul,
+  ol,
+  li,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    margin-bottom: 0;
+  }
+}
+
+/*  设置标签为块级分类 */
+article,
+aside,
+details,
+fieldset,
+figcaption,
+figure,
+footer,
+header,
+main,
+nav,
+section {
+  display: block;
+}
+
+/* 去除input标签的默认样式 */
+button,
+input,
+textarea {
+  -webkit-appearance: none;
+  appearance: none;
+  font-family: 'Microsoft YaHei', sans-serif, 'Helvetica Neue', Helvetica, Arial, '黑体', '宋体', Arial;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 1em;
+  line-height: 1em;
+  outline: none;
+  background-color: transparent;
+}
+
+/*  禁止多文本框手动拖动大小 */
+textarea {
+  resize: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* 去掉按下的阴影盒子 */
+input,
+textarea,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/*  清除a标签下划线 */
+a,
+a:visited {
+  text-decoration: none;
+}
+
+a:focus,
+a:active,
+a:hover {
+  outline: none;
+}
+
+/*  清除列表前面的点 */
+ol,
+li,
+ul {
+  list-style: none;
+}
+
+/*  清除IE下图片的边框 */
+img {
+  border-style: none;
+  font-size: 0;
+}
+
+/*  解决 chrome 浏览器自动填充密码框默认背景问题 */
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-text-fill-color: #ffffff !important;
+  color: #ffffff !important;
+  -webkit-box-shadow: 0 0 0px 1000px @color-bg-container inset !important;
+  box-shadow: 0 0 0px 1000px @color-bg-container inset !important;
+  caret-color: #ffffff; // 光标颜色
+}
+
+/*  设置 input placeholder 样式 */
+::-webkit-input-placeholder {
+  color: #afbdcc;
+}
+
+:-moz-placeholder {
+  color: #afbdcc;
+}
+
+::-moz-placeholder {
+  color: #afbdcc;
+}
+
+:-ms-input-placeholder {
+  color: #afbdcc;
+}
+
+/*  设置默认滚动条样式 */
+// 滚动条整体部分
+::-webkit-scrollbar {
+  width: 0.625rem; // 纵向滚动条的宽度
+  height: 0.625rem; // 横向滚动条的高度
+}
+
+// 横向和纵向滚动条的边角
+::-webkit-scrollbar,
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+// 滚动条中可以拖动的部分
+::-webkit-scrollbar-thumb {
+  background-color: #3c3c3c;
+  border-radius: 0.3125rem;
+}
+
+// 定义右下角拖动块的样式
+::-webkit-resizer {
+  background-repeat: no-repeat;
+  background-position: bottom right;
+}
+
+// 外层轨道（不设置）
+// ::-webkit-scrollbar-track {}
+// 内层轨道，滚动条中间部分（除去）（不设置）
+// ::-webkit-scrollbar-track-piece {}

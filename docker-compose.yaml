@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  app:
+    image: starksim/exchange:test
+    ports:
+      - '82:80'
+    container_name: 'exchange'

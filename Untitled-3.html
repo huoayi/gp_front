@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add New Product</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-color: #282c34; /* 黑色背景 */
+        color: #ffffff; /* 白色文字 */
+    }
+    .container {
+        width: 80%;
+        margin: 50px auto;
+        text-align: center;
+    }
+    .form {
+        background-color: #6a0dad; /* 紫色背景 */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+    .form label {
+        display: block;
+        margin-bottom: 10px;
+    }
+    .form input[type="text"],
+    .form input[type="number"],
+    .form select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: none;
+        border-radius: 5px;
+    }
+    .btn {
+        padding: 10px 20px;
+        background-color: #b814e0; /* 浅紫色按钮 */
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .btn:hover {
+        background-color: #9719b9; /* 深紫色按钮 */
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="form">
+        <h2>创建新产品</h2>
+        <form action="#" method="post" id="add-product-form">
+            <label for="product-name">产品名称</label>
+            <input type="text" id="product-name" name="product-name" required>
+            <label for="product-type">产品种类</label>
+            <select id="product-type" name="product-type" required>
+                <option value="type1">食用菌</option>
+                <option value="type2">瓜、果、蔬菜</option>
+                <option value="type3">花卉、苗木</option>
+                <option value="type4">药材</option>
+                <option value="type5">粮油作物</option>
+                <option value="type6">水产品</option>
+                <option value="type7">林业产品</option>
+                <option value="type8">其他植物</option>
+                <option value="type9">牲畜、禽、兽、昆虫、爬虫、两栖动物类</option>
+            </select>
+            <label for="product-price">产品单价</label>
+            <input type="number" id="product-price" name="product-price" step="0.01" min="0" required>
+            <label for="product-unit">产品单位</label>
+            <input type="text" id="product-unit" name="product-unit" required>
+            <button type="submit" class="btn">确认创建</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
