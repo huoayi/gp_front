@@ -8,15 +8,11 @@ import type {
   SelectTimeBillingType,
 } from '@/interface/aigc';
 
-export const tabList: { key: TabKey; text: string }[] = [
-  { key: 'offical', text: '产品区' },
-];
+export const tabList: { key: TabKey; text: string }[] = [{ key: 'offical', text: '产品区' }];
 
 type Classify<T> = { key: T; text: string };
 
-export const officalClassifyList: Classify<AppClassify['offical']>[] = [
-  { key: 'new-recommend', text: '最新上线产品' },
-];
+export const officalClassifyList: Classify<AppClassify['offical']>[] = [{ key: 'new-recommend', text: '' }];
 
 export const officalAppList: IClassifyAppItem<'offical'>[] = [
   {

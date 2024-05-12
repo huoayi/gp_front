@@ -91,7 +91,7 @@ export const useBalanceStore = defineStore('balance', {
           this.createdCount++;
           this.createSocket();
         } else {
-          message.error('监测脑力值变化失败，请尝试刷新页面！');
+          // message.error('监测脑力值变化失败，请尝试刷新页面！');
         }
       }
     },

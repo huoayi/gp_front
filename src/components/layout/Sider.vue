@@ -6,21 +6,21 @@
     :collapsed="webStore.isCollapsed"
     :collapsed-width="sidebar.collapsedWidth"
   >
-    <div class="logo">
-      <img
-        v-if="webStore.isCollapsed"
-        class="cursor-pointer"
-        src="@/assets/img/layout/logo-cep.png"
-        @click="jumpToAigc"
-      />
-      <img
-        v-else
-        class="cursor-pointer"
-        src="@/assets/img/layout/logo.png"
-        alt="Cephalon Cloud 端脑云 logo"
-        @click="jumpToAigc"
-      />
-    </div>
+    <!--    <div class="logo">-->
+    <!--      <img-->
+    <!--        v-if="webStore.isCollapsed"-->
+    <!--        class="cursor-pointer"-->
+    <!--        src="@/assets/img/layout/logo-cep.png"-->
+    <!--        @click="jumpToAigc"-->
+    <!--      />-->
+    <!--      <img-->
+    <!--        v-else-->
+    <!--        class="cursor-pointer"-->
+    <!--        src="@/assets/img/layout/logo.png"-->
+    <!--        alt="Cephalon Cloud 端脑云 logo"-->
+    <!--        @click="jumpToAigc"-->
+    <!--      />-->
+    <!--    </div>-->
     <layout-menu @click-item="(_d) => jumpTo(_d, '_blank')" />
     <div class="collapse" v-if="webStore.width > SIDER_CRITICAL_WIDTH">
       <MenuUnfoldOutlined v-if="webStore.collapsed" class="hover-icon-opacity cursor-pointer" @click="toggleCollapse" />

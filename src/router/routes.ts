@@ -18,6 +18,22 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/mission/list.vue'),
       },
       {
+        path: '/order',
+        component: () => import('@/views/order/index.vue'),
+      },
+      {
+        path: '/product',
+        component: () => import('@/views/product/index.vue'),
+      },
+      {
+        path: '/earnings',
+        component: () => import('@/views/earnings/index.vue'),
+      },
+      {
+        path: '/user',
+        component: () => import('@/views/user/index.vue'),
+      },
+      {
         path: '/account',
         component: () => import('@/views/account/index.vue'),
       },

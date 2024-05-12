@@ -68,7 +68,7 @@ function checkAccount() {
       await validateItem();
       // 检查手机号/邮箱是否存在
       if (!needCheckApi) return;
-      const checkFunc = valueType === 'email' ? checkEmailExist : checkPhoneExist;
+      const checkFunc = valueType === 'email' ? checkEmailExist : null;
       const { code, data } = await checkFunc({ [valueType]: value } as any);
       if (code === 20000) {
         if (checkType === 'login') {

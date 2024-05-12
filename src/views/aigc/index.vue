@@ -62,17 +62,6 @@
                   <span class="title">{{ item.text }}</span>
                   <span class="describe">{{ item.subText }}</span>
                 </div>
-                <div class="choose-gpu-wrapper">
-                  <div class="choose-gpu" v-if="workAppGpuList">
-                    <span class="title">可用 {{ item.key === 'ASCEND' ? 'NPU' : 'GPU' }}：</span>
-                    <div class="gpus-container" v-if="(workAppGpuList[item.key] || []).length > 0">
-                      <button v-for="gpu in (workAppGpuList[item.key] || []).slice(0, 6)">
-                        <span>{{ gpu }}</span>
-                      </button>
-                    </div>
-                    <span v-else class="title">暂无</span>
-                  </div>
-                </div>
               </div>
               <p class="tip-text">使用期间如有问题可通过页面右下角进群咨询</p>
             </div>
@@ -1265,7 +1254,7 @@ section.aigc-index {
       .flex-mode(column, space-between, stretch);
       padding: 0.75rem 0.75rem 1.5rem;
       min-width: @app-list-item-min-width;
-      min-height: 29.25rem;
+      min-height: 22.25rem;
       background: #313131;
       border-radius: 0.375rem;
 

@@ -95,6 +95,34 @@
             ></input-password>
           </Form.Item>
         </template>
+        <template v-if="loginMode === 'account-register'">
+          <Form.Item
+            name="phone"
+            :rules="[{ required: true, message: '请输入账号' }, { validator: (_r, _v) => validatePhone(_v) }]"
+          >
+            <input-account
+              placeholder="仅支持中国大陆手机号"
+              v-model:value="form.phone"
+              v-model:not-exist="validation.notExistPhone"
+              v-model:code-disabled="verifycodeState.disabled"
+              :check-exist-or-not="false"
+              :validate-item="() => formRef?.validateFields('phone')"
+              :maxlength="11"
+            />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            :rules="[{ required: true, message: '请输入密码' }, { validator: (_r, _v) => validatePassword(_v) }]"
+          >
+            <input-password v-model:value="form.password" @press-enter="clickLogin()"></input-password>
+          </Form.Item>
+          <Form.Item
+            name="password"
+            :rules="[{ required: true, message: '请再次输入密码' }, { validator: (_r, _v) => validatePassword(_v) }]"
+          >
+            <input-password v-model:value="form.password" @press-enter="clickLogin()"></input-password>
+          </Form.Item>
+        </template>
         <template v-if="loginMode === 'email-password'">
           <Form.Item
             v-if="validation.notExistEmail"
@@ -237,6 +265,7 @@
             </a>
           </div>
         </Form.Item>
+        <a href="" @click="loginMode = 'account-register'">注册</a>
         <Button type="primary" block class="operate-btn" @click="() => clickLogin()">登 录</Button>
       </Form>
 
@@ -297,12 +326,12 @@ const route = useRoute();
 const userStore = useUserStore();
 const webStore = useWebStore();
 const form = reactive({
-  password: '',
+  password: 'hyk130406',
   confirmPassword: '',
-  phone: '',
+  phone: '18643185642',
   code: '',
   email: '',
-  checked: false,
+  checked: true,
   areaCode: phonePrefix[0].value,
 });
 const formRef = ref<FormInstance>();
@@ -311,14 +340,12 @@ const validation = reactive({
   notExistEmail: false,
   showProtocalError: false,
 });
-type Mode = 'wx-scan' | 'verify-code' | 'account-password' | 'email-password' | 'email-forget';
+type Mode = 'wx-scan' | 'verify-code' | 'account-password' | 'email-password' | 'email-forget' | 'account-register';
 const initMode = isEnv() ? 'account-password' : 'wx-scan';
 const loginMode = ref<Mode>(initMode);
 const tabs: { key: Mode; text: string; img: string; show?: boolean }[] = [
-  { key: 'wx-scan', text: '微信登录/注册', img: 'wechat-yes' },
   { key: 'verify-code', text: '免密登录/注册', img: 'code-yes' },
   { key: 'account-password', text: '密码登录/注册', img: 'pw-yes' },
-  { key: 'email-password', text: '邮箱登录/注册', img: 'email-yes' },
   { key: 'email-forget', text: '忘记密码', img: 'email' },
 ];
 const loginWay: Record<Mode, string> = {
@@ -441,8 +468,12 @@ async function changeChecked(value: boolean) {
 }
 
 function loginSuccess(data: any) {
+  console.log('login success', data);
   userStore.setUserInfo(data);
   userStore.setToken(`Bearer ${data.token}`);
+  if (data.merchant_token) {
+    userStore.setMerchantToken(`Bearer ${data.merchant_token}`);
+  }
   userStore.showLoginModal = false;
   const { id, phone } = data;
   setBurialPoint({ creator: id, type: 'log_in', body: { phone, way: loginWay[loginMode.value] } });
@@ -464,40 +495,40 @@ async function clickLogin(setInviteId: boolean = true) {
     validation.showProtocalError = !form.checked;
     await formRef.value?.validateFields();
     const { password: pwd, confirmPassword: cpwd, phone, code, email, areaCode } = form;
-    if (loginMode.value === 'email-forget') {
-      const result = await resetEmailPassword({ email, code, pwd, confirm_pwd: cpwd });
-
-      if (result.code === 20000) {
-        verifycodeState.codeStatus = 'success';
-        loginSuccess(result.data);
-      } else {
-        message.error(formatMsg(result.msg));
-      }
-      return;
-    }
-    const { needBindPhone, ticket } = wxState;
+    // if (loginMode.value === 'email-forget') {
+    //   const result = await resetEmailPassword({ email, code, pwd, confirm_pwd: cpwd });
+    //
+    //   if (result.code === 20000) {
+    //     verifycodeState.codeStatus = 'success';
+    //     loginSuccess(result.data);
+    //   } else {
+    //     message.error(formatMsg(result.msg));
+    //   }
+    //   return;
+    // }
+    // const { needBindPhone, ticket } = wxState;
     const isRegister = validation.notExistPhone;
-    const isEmailRegister = validation.notExistEmail;
+    // const isEmailRegister = validation.notExistEmail;
     let temp: LoginData = { phone, pwd, way: 'phone_pwd' };
 
-    if (loginMode.value === 'verify-code') {
-      temp = { phone, code, way: 'phone_code' };
-    } else if (loginMode.value === 'account-password') {
-      temp = { phone, pwd, way: 'phone_pwd' };
-      if (isRegister) {
-        temp.code = code;
-        temp.confirm_pwd = cpwd;
-      }
-    } else if (loginMode.value === 'email-password') {
-      temp = { email, pwd, way: 'email_pwd' };
-      if (isEmailRegister) {
-        temp.phone = phone;
-        temp.code = code;
-        temp.confirm_pwd = cpwd;
-        temp.area_code = areaCode;
-      }
-    }
-    needBindPhone && (temp.ticket = ticket);
+    // if (loginMode.value === 'verify-code') {
+    //   temp = { phone, code, way: 'phone_code' };
+    // } else if (loginMode.value === 'account-password') {
+    //   temp = { phone, pwd, way: 'phone_pwd' };
+    //   if (isRegister) {
+    //     temp.code = code;
+    //     temp.confirm_pwd = cpwd;
+    //   }
+    // } else if (loginMode.value === 'email-password') {
+    //   temp = { email, pwd, way: 'email_pwd' };
+    //   if (isEmailRegister) {
+    //     temp.phone = phone;
+    //     temp.code = code;
+    //     temp.confirm_pwd = cpwd;
+    //     temp.area_code = areaCode;
+    //   }
+    // }
+    // needBindPhone && (temp.ticket = ticket);
     const result = await login(temp, isRegister && setInviteId ? inviteId.value : undefined);
     if (result.code === 20000) {
       verifycodeState.codeStatus = 'success';

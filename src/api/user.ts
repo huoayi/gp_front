@@ -22,7 +22,7 @@ export function login(data: LoginData, id?: string) {
   if (data.way === 'email_pwd') {
     return request.$Axios.post(url, { ...data });
   } else {
-    return request.$Axios.post(url, { ...data, app_type: 'platform' });
+    return request.$Axios.post(url, { ...data, way: 'phone_pwd' });
   }
 }
 

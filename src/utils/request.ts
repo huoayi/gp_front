@@ -107,8 +107,12 @@ class Request {
         } else {
           const store = useUserStore();
           const token = store.getToken();
+          const merchantToken = store.getMerchantToken();
+          console.log('merchantToken', merchantToken);
           if (token) {
             config.headers.Authorization = token;
+            config.headers.MerchantAuthorization = merchantToken;
+            console.log('config.headers', config.headers);
           } else {
             const { url, method } = config;
             if (url?.includes('/user/missions') && method === 'get') {
@@ -131,16 +135,16 @@ class Request {
         if (res.data) {
           const { code, msg } = res.data;
           if (code === 40000) {
-            if (router.currentRoute.value.name !== 'h5-payment') {
-              message.error('登录凭证失效！', 1, () => {
-                useUserStore().resetState();
-                useBalanceStore().closeSocket();
-                useMissionStore().resetSum();
-                router.push({ name: 'aigc' });
-              });
-            } else {
-              message.error('登录凭证失效，请重新刷新二维码！');
-            }
+            // if (router.currentRoute.value.name !== 'h5-payment') {
+            //   message.error('登录凭证失效！', 1, () => {
+            //     useUserStore().resetState();
+            //     useBalanceStore().closeSocket();
+            //     useMissionStore().resetSum();
+            //     router.push({ name: 'aigc' });
+            //   });
+            // } else {
+            //   message.error('登录凭证失效，请重新刷新二维码！');
+            // }
           } else {
             const digit = Math.round(code / 10000);
             if (digit === 5) {
@@ -175,12 +179,12 @@ class Request {
           return Promise.reject({ code: 429 });
         }
 
-        if (error.code === 'ECONNABORTED') {
-          const msg = '连接中止，请刷新重试！';
-          if (error.config?.baseURL !== import.meta.env.VITE_APP_DISK_URL) message.error(msg);
-          this.isRequestAborted = true;
-          return Promise.reject(msg);
-        }
+        // if (error.code === 'ECONNABORTED') {
+        //   const msg = '连接中止，请刷新重试！';
+        //   if (error.config?.baseURL !== import.meta.env.VITE_APP_DISK_URL) message.error(msg);
+        //   this.isRequestAborted = true;
+        //   return Promise.reject(msg);
+        // }
 
         if (!this.isRequestAborted && Request.CONFIG.error_message_show) {
           let msg = '';

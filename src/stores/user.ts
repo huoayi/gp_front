@@ -17,6 +17,7 @@ interface IState {
     areaCode: string;
   } | null;
   token: string | null;
+  merchantToken: string | null;
   showLoginModal: boolean; // 显示登录弹窗
   isFirstRegister: boolean;
   isActivityExist: boolean | null; // 不受登录态影响
@@ -30,6 +31,7 @@ export const useUserStore = defineStore('user', {
   state: (): IState => ({
     userInfo: null,
     token: null,
+    merchantToken: null,
     showLoginModal: false,
     isFirstRegister: false,
     isActivityExist: null,
@@ -65,6 +67,7 @@ export const useUserStore = defineStore('user', {
     resetState() {
       this.userInfo = null;
       this.setToken('');
+      this.setMerchantToken('');
       this.isFirstRegister = false;
     },
     async getUserInfo() {
@@ -77,8 +80,8 @@ export const useUserStore = defineStore('user', {
       } catch (err: any) {
         if (isEnv() && err.code === 50001) {
           // 已登录的情况下，本地切环境，请求报数据库错误
-          this.resetState();
-          return 'error';
+          // this.resetState();
+          // return 'error';
         }
         console.log('get userinfo', err);
         return 'error';
@@ -90,13 +93,20 @@ export const useUserStore = defineStore('user', {
       this.token = temp;
       return temp || '';
     },
+    getMerchantToken() {
+      if (this.merchantToken) return this.merchantToken;
+    },
     setToken(tk: string) {
       this.token = tk;
       setStorage({ name: 'userToken', data: tk, type: 'local' });
     },
+    setMerchantToken(tk: string) {
+      this.merchantToken = tk;
+      setStorage({ name: 'merchantToken', data: tk, type: 'local' });
+    },
     setUserInfo(data: any) {
-      const { id: userId, key, phone, user_type: userType, created_at: createdAt, email, area_code: areaCode } = data;
-      this.userInfo = { userId, key, phone, userType, createdAt, email, areaCode };
+      // const { id: userId, key, phone, user_type: userType, created_at: createdAt, email, area_code: areaCode } = data;
+      this.userInfo = data;
     },
     setIsFirstRegister(is: boolean) {
       this.isFirstRegister = is;
@@ -116,6 +126,7 @@ export const useUserStore = defineStore('user', {
       }
     },
     async getIsActivityExist() {
+      return;
       if (this.isActivityExist !== null) return this.isActivityExist;
       const result = await getActivityIsExist();
       if (result.code !== 20000) return;

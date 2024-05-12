@@ -250,7 +250,7 @@ export function toRem(v: number) {
   return `${toRemValue(v)}rem`; // rem
 }
 
-// 判断操作是否需要登录f
+// 判断操作是否需要登录
 export function beforeOperation(func?: Function) {
   const store = useUserStore();
   const token = store.getToken();

@@ -3,23 +3,6 @@
     <!-- 有 has-hover-content 类名的容器：
       1. 要用 div 包裹正文作为容器中的第一个子元素，是为了 hover 时显示三角形，
       2. hover-content 是悬浮框内容，hover-content-shadow 是悬浮框外层阴影 -->
-    <div class="share-register" :class="{ 'not-margin': !userStore.isLogining }">
-      <div
-        class="share-register-content flex-center cursor-pointer"
-        @click="
-          jumpTo('/share');
-          invite1();
-        "
-      >
-        <img
-          v-if="userStore.isActivityExist"
-          class="has-activity-icon"
-          src="@/assets/img/user/shareRegister/icon.gif"
-        />
-        <img v-else src="@/assets/img/user/shareRegister/icon.png" />
-        <span class="extra-txt">邀请好友</span>
-      </div>
-    </div>
     <div
       v-if="userStore.isLogining"
       class="using-mission"
@@ -50,28 +33,7 @@
         <div class="hover-content-shadow"></div>
       </template>
     </div>
-    <div v-if="userStore.isLogining" class="account-number has-hover-content">
-      <div @click="clickPoints">
-        <img src="@/assets/img/layout/header/cep.gif" class="cursor-pointer" />
-        <span class="cursor-pointer">{{ getComma(balanceStore.showValue) }}&nbsp;脑力值</span>
-      </div>
-      <div class="hover-content">
-        <span class="title">获取更多脑力值</span>
-        <div class="btns">
-          <Button type="primary" class="flex-center" @click="clickRecharge">去购买</Button>
-          <Button
-            type="primary"
-            class="flex-center"
-            @click="
-              jumpTo('/share');
-              invite2();
-            "
-            >邀请好友</Button
-          >
-        </div>
-      </div>
-      <div class="hover-content-shadow"></div>
-    </div>
+
     <div v-if="userStore.isLogining" class="has-hover-content user">
       <div class="flex-center cursor-pointer">
         <img src="@/assets/img/user/default-avatar.png" />

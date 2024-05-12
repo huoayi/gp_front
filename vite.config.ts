@@ -84,9 +84,9 @@ export default defineConfig(({ mode }): UserConfig => {
               },
               '^/api': {
                 // target: 'https://www.rosabi.cn',
-                target: 'http://159.75.243.79', // rosabi ip
-                // target: 'http://192.168.0.26:8040',
-                rewrite: (path) => path.replace(/^\/api/, '/user-center/v1'),
+                // target: 'http://159.75.243.79', // rosabi ip
+                target: 'http://192.168.1.108:8040',
+                rewrite: (path) => path.replace(/^\/api/, '/v1'),
                 // rewrite: (path) => path.replace(/^\/api/, '/v1'),
                 changeOrigin: true,
               },

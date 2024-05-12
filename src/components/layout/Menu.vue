@@ -48,6 +48,7 @@ import { useRoute, type RouteLocationRaw } from 'vue-router';
 import { setBurialPoint } from '@/api/burial';
 import { useUserStore } from '@/stores/user';
 import { useMissionStore } from '@/stores/mission';
+import router from '@/router';
 
 export interface IMenuItem {
   key: string;
@@ -66,15 +67,21 @@ const props = withDefaults(defineProps<IProps>(), {
   // 注意：这里默认是 pc 的 菜单。key 唯一，且与 icon file name 一样
   menus: () => [
     { key: 'aigc', label: '产品区', to: '/aigc' },
-    { key: 'mission', label: '我的订单', to: '/mission' },
+    { key: 'mission', label: '我的订单', to: '/order' },
     {
-      key: 'account',
+      key: 'user',
       label: '账户管理',
+      to: '/user',
     },
     {
-      key: 'help',
-      label: '成为商户',
-      to: 'https://cephalon.feishu.cn/docx/T6PJdE4Sjob8Egxz0bScKiqPnUb?from=from_copylink',
+      key: 'product',
+      label: '产品管理',
+      to: '/product',
+    },
+    {
+      key: 'earnings',
+      label: '收益管理',
+      to: '/earnings',
     },
   ],
 });
@@ -116,30 +123,8 @@ function findItem(path: string, items: IMenuItem[], sub?: string) {
 }
 
 function clickItem(to?: string) {
-  // 埋点
-  switch (to) {
-    case '/mission':
-      setBurialPoint({
-        creator: userStore.userInfo?.userId as string,
-        type: 'click_my_app',
-        body: { phone: userStore.userInfo?.phone },
-      });
-      break;
-    case '/api':
-      setBurialPoint({
-        creator: userStore.userInfo?.userId as string,
-        type: 'click_my_api',
-        body: { phone: userStore.userInfo?.phone },
-      });
-      break;
-    case '/account':
-      setBurialPoint({
-        creator: userStore.userInfo?.userId as string,
-        type: 'click_my_account',
-        body: { phone: userStore.userInfo?.phone },
-      });
-      break;
-  }
+  // console.log('clickItem', to);
+  // router.push(to);
   missionStore.clickType = 'click';
   to && emit('clickItem', to);
 }
