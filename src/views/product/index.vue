@@ -116,7 +116,7 @@ import { reactive, ref } from 'vue';
 import { cloneDeep } from 'lodash-es';
 import { onMounted } from 'vue';
 import { SearchOutlined } from '@ant-design/icons-vue';
-import { addProduct, getProductList } from '@/api/product';
+import { addProduct, getMerchantProductList, getProductList } from '@/api/product';
 import { message } from 'ant-design-vue';
 import { useUserStore } from '@/stores/user';
 
@@ -259,7 +259,7 @@ function resetModal() {
 }
 
 async function getData() {
-  const res = await getProductList({ page_index: 1, page_size: 100 });
+  const res = await getMerchantProductList({ page_index: 1, page_size: 100 });
   if (res.code === 20000) {
     dataSource.value = res.data.list;
   } else {

@@ -95,6 +95,9 @@ export const useUserStore = defineStore('user', {
     },
     getMerchantToken() {
       if (this.merchantToken) return this.merchantToken;
+      let temp = localStorage.getItem('merchantToken');
+      this.merchantToken = temp;
+      return temp || '';
     },
     setToken(tk: string) {
       this.token = tk;

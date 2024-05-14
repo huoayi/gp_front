@@ -7,3 +7,7 @@ export function addProduct(data) {
 export function getProductList(params) {
   return request.$Axios.get('/product', params);
 }
+
+export function getMerchantProductList(params) {
+  return request.$Axios.get('/merchant/product', params);
+}

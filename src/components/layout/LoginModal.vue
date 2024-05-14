@@ -361,7 +361,7 @@ const tabs: { key: Mode; text: string; img: string; show?: boolean }[] = [
   { key: 'verify-code', text: '免密登录/注册', img: 'code-yes' },
   { key: 'account-password', text: '密码登录/注册', img: 'pw-yes' },
   { key: 'email-forget', text: '忘记密码', img: 'email' },
-  { key: 'account-register', text: '注册', img: 'register' },
+  { key: 'account-register', text: '注册', img: 'know' },
 ];
 const loginWay: Record<Mode, string> = {
   'account-register': 'register',
@@ -497,6 +497,7 @@ function loginSuccess(data: any) {
   console.log('login success', data);
   userStore.setUserInfo(data);
   userStore.setToken(`Bearer ${data.token}`);
+  console.log(999, data);
   if (data.merchant_token) {
     userStore.setMerchantToken(`Bearer ${data.merchant_token}`);
   }
