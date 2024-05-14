@@ -419,25 +419,7 @@ async function confirmDelUserUploaded() {
   operationState.deleteLoading = false;
 }
 
-async function getRunningMissions(id?: string) {
-  const result = await getMissionList({
-    page_index: 1,
-    page_size: missionStore.actualSum || 10,
-    // front_state: ['running'],
-    id,
-  });
-  missionOptions.value = (result.data.list || []).map((item: any) => {
-    const { id, mission_type, urls } = item;
-    let label = `${mission_type}：${id}`;
-    let tempUrls = urls && typeof urls === 'string' ? JSON.parse(urls) : urls;
-    let url = '';
-    if (Array.isArray(tempUrls)) {
-      url = tempUrls[0] || '';
-    }
-
-    return { value: id, label, url };
-  });
-}
+async function getRunningMissions(id?: string) {}
 
 function searchRunningMissions(value: string) {
   clearTimer(searchMissionTimer);

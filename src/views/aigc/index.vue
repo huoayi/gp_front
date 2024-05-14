@@ -53,7 +53,7 @@
                     <img :src="item.jpg_url" alt="" />
                   </div>
                   <span class="title">{{ item.product_name }}</span>
-                  <span class="title" style="font-size: small">价格: ¥{{ item.price }}</span>
+                  <span class="title" style="font-size: small">价格: ¥{{ item.price }} 单位：{{ item.unit }}</span>
                   <span class="describe">{{ item.comment }}</span>
                 </div>
               </div>
@@ -133,7 +133,6 @@
           @finishFailed="onFinishFailed"
           centered="true"
         >
-          {{ focusItem }}
           <a-form-item label="商品名称" name="name">
             {{ focusItem.product_name }}
           </a-form-item>
@@ -142,6 +141,9 @@
           </a-form-item>
           <a-form-item label="单价" name="comment">
             {{ focusItem.price }}
+          </a-form-item>
+          <a-form-item label="单位" name="comment">
+            {{ focusItem.unit }}
           </a-form-item>
           <a-form-item label="数量" name="unit">
             <a-input v-model:value="newOrderForm.count" />
@@ -850,16 +852,7 @@ async function _getAppGpuList() {
   workAppGpuList.value = arr;
 }
 
-function setPVBurialPoint() {
-  clearTimer(pvBurialTimer);
-  pvBurialTimer.value = window.setTimeout(() => {
-    setBurialPoint({
-      creator: userStore.userInfo?.userId as string,
-      type: 'page_view_aigc',
-      body: { phone: userStore.userInfo?.phone },
-    });
-  }, 500);
-}
+function setPVBurialPoint() {}
 
 onMounted(() => {
   userStore.isLogining && setPVBurialPoint();

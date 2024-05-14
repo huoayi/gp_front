@@ -530,10 +530,7 @@ async function getGift() {
   giftList.value = gift.edges.lotto_prizes;
 }
 
-async function getMissions() {
-  const { data: res3 } = await getMissionList();
-  missionList.value = res3.edges.lotto_Change_rules;
-}
+async function getMissions() {}
 
 async function getRecord() {
   const { data: res1 } = await getLotteryRecord({

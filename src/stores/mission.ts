@@ -43,15 +43,7 @@ export const useMissionStore = defineStore('mission', {
         this.sum = num;
       }
     },
-    async countPossibleUsingMissions() {
-      const result = await getMissionList({
-        page_index: 1,
-        page_size: 1,
-        front_state: ['running'],
-      });
-      const temp = result.code === 20000 ? result.data.total : 0;
-      this.changeSum(temp);
-    },
+    async countPossibleUsingMissions() {},
     setIsConfirmKnowMissionNeedManualShutdown(bool: boolean) {
       this.isConfirmKnowMissionNeedManualShutdown = bool;
       setStorage({ name: 'ickmnms', data: bool, type: 'local' });
