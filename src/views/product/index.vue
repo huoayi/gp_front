@@ -61,7 +61,6 @@
       </a-table>
     </div>
     <a-modal v-model:open="showAddModal" title="添加新的商品" @ok="confirmAdd">
-      {{ newProductForm }}
       <a-form
         :model="newProductForm"
         name="basic"
@@ -93,7 +92,7 @@
           ><a-upload
             v-model:file-list="fileList"
             name="file"
-            action="http://192.168.1.108:8040/v1/set-photo"
+            action="http://10.63.10.19:8040/v1/set-photo"
             :headers="token"
             @change="handleChange"
           >
@@ -134,6 +133,22 @@ const types = [
   {
     value: 'fisheries',
     label: '渔业',
+  },
+  {
+    value: 'edible-fungi',
+    label: '菌类',
+  },
+  {
+    value: 'medicinal-materials',
+    label: '药材',
+  },
+  {
+    value: 'animal-husbandry',
+    label: '动物饲养',
+  },
+  {
+    value: 'grain-and-oil-crops',
+    label: '粮油作物',
   },
 ];
 

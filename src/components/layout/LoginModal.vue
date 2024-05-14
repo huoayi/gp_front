@@ -557,18 +557,15 @@ async function clickLogin(setInviteId: boolean = true) {
     // }
     // needBindPhone && (temp.ticket = ticket);
     const result = await login(temp, isRegister && setInviteId ? inviteId.value : undefined);
+    console.log('result', result);
     if (result.code === 20000) {
+      console.log('success');
       verifycodeState.codeStatus = 'success';
       loginSuccess(result.data);
       userStore.setIsFirstRegister(isRegister);
-    } else if (result.code === 30013) {
-      // 邀请码错误，重新执行
-      clickLogin(false);
-    } else if (!result.msg) {
-      message.error(formatMsg('登录失败，请稍后再试！'));
     }
   } catch (err) {
-    console.log('form', err);
+    message.error('登录失败，请检查账号密码！');
   }
 }
 

@@ -1,6 +1,6 @@
 <template>
   <div class="btn-become">
-    <a-button v-if="userInfo.role !== '商户'" style="background-color: #713de1" @click="showAddModal = true"
+    <a-button v-if="userInfo.role !== 'merchant'" style="background-color: #713de1" @click="showAddModal = true"
       >成为商户</a-button
     >
   </div>
