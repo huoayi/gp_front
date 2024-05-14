@@ -28,16 +28,9 @@
           <search-outlined :style="{ color: filtered ? '#108ee9' : undefined }" />
         </template>
         <template #bodyCell="{ column, text, record }">
-          <template v-if="['ownerPhone', 'ownerName'].includes(column.dataIndex)">
+          <template v-if="['name'].includes(column.dataIndex)">
             <div>
-              <a-input
-                v-if="editableData[record.id]"
-                v-model:value="editableData[record.id][column.dataIndex]"
-                style="margin: -5px 0"
-              />
-              <template v-else>
-                {{ text }}
-              </template>
+              {{ record.edges.products.product_name }}
             </div>
           </template>
           <template v-else-if="column.dataIndex === 'operation'">
@@ -67,67 +60,40 @@ import { reactive, ref } from 'vue';
 import { cloneDeep } from 'lodash-es';
 import { onMounted } from 'vue';
 import { SearchOutlined } from '@ant-design/icons-vue';
+import { getOrderList } from '@/api/order';
+import { message } from 'ant-design-vue';
 
 const searchInput = ref();
 const columns = [
   {
     id: 'id',
-    title: '车辆信息ID',
+    title: '订单ID',
     dataIndex: 'id',
   },
   {
-    id: 'brand',
-    title: '品牌',
-    dataIndex: 'brand',
+    id: 'name',
+    title: '商品名称',
+    dataIndex: 'name',
   },
   {
-    id: 'model',
-    title: '型号',
-    dataIndex: 'model',
+    id: 'count',
+    title: '数量',
+    dataIndex: 'count',
   },
   {
-    id: 'plate',
-    title: '车牌号',
-    dataIndex: 'plate',
-    customFilterDropdown: true,
-    onFilter: (value, record) => {
-      return record.plate.toString().toLowerCase().includes(value.toLowerCase());
-    },
-    onFilterDropdownOpenChange: (visible) => {
-      console.log(3, visible);
-      if (visible) {
-        setTimeout(() => {
-          searchInput.value.focus();
-        }, 100);
-      }
-    },
+    id: 'amount',
+    title: '总价',
+    dataIndex: 'amount',
   },
   {
-    id: 'ownerPhone',
-    title: '拥有者手机号',
-    dataIndex: 'ownerPhone',
-    customFilterDropdown: true,
-    onFilter: (value, record) => {
-      return record.ownerPhone.toString().toLowerCase().includes(value.toLowerCase());
-    },
-    onFilterDropdownOpenChange: (visible) => {
-      console.log(3, visible);
-      if (visible) {
-        setTimeout(() => {
-          searchInput.value.focus();
-        }, 100);
-      }
-    },
+    id: 'address',
+    title: '送货地址',
+    dataIndex: 'address',
   },
   {
-    id: 'ownerName',
-    title: '持有者姓名',
-    dataIndex: 'ownerName',
-  },
-  {
-    id: 'operation',
-    title: 'operation',
-    dataIndex: 'operation',
+    id: 'status',
+    title: '状态',
+    dataIndex: 'status',
   },
 ];
 const dataSource = ref([]);
@@ -172,12 +138,18 @@ const confirmAdd = () => {
 
 async function onFinish() {}
 
-async function getData() {}
+async function getData() {
+  const res = await getOrderList({ page_index: 1, page_size: 100 });
+  if (res.code === 20000) {
+    dataSource.value = res.data.list;
+  } else {
+    message.error('获取数据失败');
+  }
+}
 
 async function onDelete(id) {}
 
 onMounted(() => {
-  console.log('CarInfo mounted');
   getData();
 });
 </script>

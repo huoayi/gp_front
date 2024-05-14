@@ -85,13 +85,7 @@
           <a-input v-model:value="newProductForm.price" />
         </a-form-item>
         <a-form-item label="商品类型" name="type" :rules="[{ required: true, message: 'Please input your username!' }]">
-          <a-select
-            ref="select"
-            v-model:value="newProductForm.type"
-            style="width: 120px"
-            @focus="focus"
-            @change="handleChange"
-          >
+          <a-select ref="select" v-model:value="newProductForm.type" style="width: 120px" @focus="focus">
             <a-select-option v-for="item in types" :value="item.value">{{ item.label }}</a-select-option>
           </a-select>
         </a-form-item>
@@ -100,7 +94,7 @@
             v-model:file-list="fileList"
             name="file"
             action="http://192.168.1.108:8040/v1/set-photo"
-            :headers="headers"
+            :headers="token"
             @change="handleChange"
           >
             <a-button>
@@ -122,13 +116,13 @@ import { reactive, ref } from 'vue';
 import { cloneDeep } from 'lodash-es';
 import { onMounted } from 'vue';
 import { SearchOutlined } from '@ant-design/icons-vue';
-import { addProduct } from '@/api/product';
+import { addProduct, getProductList } from '@/api/product';
 import { message } from 'ant-design-vue';
+import { useUserStore } from '@/stores/user';
 
 const fileList = ref([]);
 const headers = {
-  authorization:
-    'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJbmZvIjoiMTc3NzI4NzAzODE0MzgzNjE2MCIsImV4cCI6MTcxNjA1NDQzM30.iH5rSWCBhAYKzeQidu4CnOIHltCAdSLSpDDIrs0btV8',
+  authorization: 'token.value',
 };
 const types = [
   { value: 'tea', label: '茶' },
@@ -151,9 +145,9 @@ const columns = [
     dataIndex: 'id',
   },
   {
-    id: 'name',
+    id: 'product_name',
     title: '名称',
-    dataIndex: 'name',
+    dataIndex: 'product_name',
   },
   {
     id: 'comment',
@@ -163,7 +157,7 @@ const columns = [
   {
     id: 'price',
     title: '价格',
-    dataIndex: 'plate',
+    dataIndex: 'price',
     customFilterDropdown: true,
     onFilter: (value, record) => {
       return record.plate.toString().toLowerCase().includes(value.toLowerCase());
@@ -178,14 +172,9 @@ const columns = [
     },
   },
   {
-    id: 'type',
+    id: 'produce_type',
     title: '类型',
-    dataIndex: 'type',
-  },
-  {
-    id: 'operation',
-    title: 'operation',
-    dataIndex: 'operation',
+    dataIndex: 'produce_type',
   },
 ];
 const dataSource = ref([]);
@@ -269,13 +258,25 @@ function resetModal() {
   showAddModal.value = false;
 }
 
-async function getData() {}
+async function getData() {
+  const res = await getProductList({ page_index: 1, page_size: 100 });
+  if (res.code === 20000) {
+    dataSource.value = res.data.list;
+  } else {
+    message.error('获取数据失败');
+  }
+}
 
 async function onDelete(id) {}
 
+const token = ref({});
 onMounted(() => {
   console.log('CarInfo mounted');
   getData();
+  const store = useUserStore();
+  token.value = {
+    authorization: store.getToken(),
+  };
 });
 </script>
 

@@ -54,7 +54,9 @@ router.beforeEach(async (to, from, next) => {
 
   const token = store.getToken();
   if (token) {
+    console.log('token:', token);
     const info = await store.getUserInfo();
+    console.log('get the info', info);
     if (info) {
       // 登录后置
       next();
@@ -76,7 +78,7 @@ router.beforeEach(async (to, from, next) => {
 router.onError((err) => {
   console.log('router err:', err);
   if (err.toString().indexOf('Failed to fetch dynamically imported module') > -1) {
-    message.info('资源加载中，请刷新页面！');
+    // message.info('资源加载中，请刷新页面！');
   }
 });
 

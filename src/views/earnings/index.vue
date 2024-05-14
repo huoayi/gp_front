@@ -28,33 +28,20 @@
           <search-outlined :style="{ color: filtered ? '#108ee9' : undefined }" />
         </template>
         <template #bodyCell="{ column, text, record }">
-          <template v-if="['ownerPhone', 'ownerName'].includes(column.dataIndex)">
+          <template v-if="['name'].includes(column.dataIndex)">
             <div>
-              <a-input
-                v-if="editableData[record.id]"
-                v-model:value="editableData[record.id][column.dataIndex]"
-                style="margin: -5px 0"
-              />
-              <template v-else>
-                {{ text }}
-              </template>
+              {{ record.edges.products.product_name }}
             </div>
           </template>
           <template v-else-if="column.dataIndex === 'operation'">
-            <div class="editable-row-operations">
-              <span v-if="editableData[record.id]">
-                <a-typography-link @click="save(record.id)">Save</a-typography-link>
-                <a-popconfirm title="Sure to cancel?" @confirm="cancel(record.id)">
-                  <a>Cancel</a>
-                </a-popconfirm>
-              </span>
-              <span v-else>
-                <a @click="edit(record.id)">修改</a>
-              </span>
-            </div>
-            <a-popconfirm v-if="dataSource.length" title="确认删除?" @confirm="onDelete(record.id)">
-              <a>删除</a>
+            <a-popconfirm
+              v-if="dataSource.length && record.status === 'Payed'"
+              title="确认发货?"
+              @confirm="deliverOrderFn(record.id)"
+            >
+              <a>确认发货</a>
             </a-popconfirm>
+            <a v-else href="" style="color: #726e6e">确认发货</a>
           </template>
         </template>
       </a-table>
@@ -67,66 +54,54 @@ import { reactive, ref } from 'vue';
 import { cloneDeep } from 'lodash-es';
 import { onMounted } from 'vue';
 import { SearchOutlined } from '@ant-design/icons-vue';
+import { deliverOrder, getEarningList, getOrderList } from '@/api/order';
+import { message } from 'ant-design-vue';
+
+async function deliverOrderFn(id) {
+  const res = await deliverOrder({ order_id: id, finish: true });
+  if (res.code === 20000) {
+    message.success('发货成功');
+    getData();
+  } else {
+    message.error('发货失败');
+  }
+}
 
 const searchInput = ref();
 const columns = [
   {
     id: 'id',
-    title: '车辆信息ID',
+    title: '订单ID',
     dataIndex: 'id',
   },
   {
-    id: 'brand',
-    title: '品牌',
-    dataIndex: 'brand',
+    id: 'name',
+    title: '商品名称',
+    dataIndex: 'name',
   },
   {
-    id: 'model',
-    title: '型号',
-    dataIndex: 'model',
+    id: 'count',
+    title: '数量',
+    dataIndex: 'count',
   },
   {
-    id: 'plate',
-    title: '车牌号',
-    dataIndex: 'plate',
-    customFilterDropdown: true,
-    onFilter: (value, record) => {
-      return record.plate.toString().toLowerCase().includes(value.toLowerCase());
-    },
-    onFilterDropdownOpenChange: (visible) => {
-      console.log(3, visible);
-      if (visible) {
-        setTimeout(() => {
-          searchInput.value.focus();
-        }, 100);
-      }
-    },
+    id: 'amount',
+    title: '总价',
+    dataIndex: 'amount',
   },
   {
-    id: 'ownerPhone',
-    title: '拥有者手机号',
-    dataIndex: 'ownerPhone',
-    customFilterDropdown: true,
-    onFilter: (value, record) => {
-      return record.ownerPhone.toString().toLowerCase().includes(value.toLowerCase());
-    },
-    onFilterDropdownOpenChange: (visible) => {
-      console.log(3, visible);
-      if (visible) {
-        setTimeout(() => {
-          searchInput.value.focus();
-        }, 100);
-      }
-    },
+    id: 'address',
+    title: '送货地址',
+    dataIndex: 'address',
   },
   {
-    id: 'ownerName',
-    title: '持有者姓名',
-    dataIndex: 'ownerName',
+    id: 'status',
+    title: '状态',
+    dataIndex: 'status',
   },
   {
     id: 'operation',
-    title: 'operation',
+    title: '操作',
     dataIndex: 'operation',
   },
 ];
@@ -172,12 +147,19 @@ const confirmAdd = () => {
 
 async function onFinish() {}
 
-async function getData() {}
+async function getData() {
+  const res = await getEarningList({ page_index: 1, page_size: 100 });
+  if (res.code === 20000) {
+    console.log(111, res.data.list);
+    dataSource.value = res.data.list;
+  } else {
+    message.error('获取数据失败');
+  }
+}
 
 async function onDelete(id) {}
 
 onMounted(() => {
-  console.log('CarInfo mounted');
   getData();
 });
 </script>
@@ -188,8 +170,10 @@ onMounted(() => {
   height: 100%;
   padding: 16px;
 }
+
 .editable-cell {
   position: relative;
+
   .editable-cell-input-wrapper,
   .editable-cell-text-wrapper {
     padding-right: 24px;
@@ -225,9 +209,11 @@ onMounted(() => {
     margin-bottom: 8px;
   }
 }
+
 .editable-cell:hover .editable-cell-icon {
   display: inline-block;
 }
+
 .editable-row-operations a {
   margin-right: 8px;
 }

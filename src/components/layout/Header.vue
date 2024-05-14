@@ -36,16 +36,16 @@
 
     <div v-if="userStore.isLogining" class="has-hover-content user">
       <div class="flex-center cursor-pointer">
-        <img src="@/assets/img/user/default-avatar.png" />
+        <img :src="avatar" style="border-radius: 50%" />
         <span class="extra-txt">{{ userStore.getAsteriskAccount }}</span>
       </div>
       <div class="hover-content">
-        <Button @click="clickChangePwd">
-          <template #icon>
-            <img src="@/assets/img/layout/header/change.png" />
-          </template>
-          修改密码
-        </Button>
+        <!--        <Button @click="clickChangePwd">-->
+        <!--          <template #icon>-->
+        <!--            <img src="@/assets/img/layout/header/change.png" />-->
+        <!--          </template>-->
+        <!--          修改密码-->
+        <!--        </Button>-->
         <Button @click="clickLogout">
           <template #icon>
             <img src="@/assets/img/layout/header/exit.png" />
@@ -65,7 +65,7 @@ import { useBalanceStore } from '@/stores/balance';
 import { useUserStore } from '@/stores/user';
 import { clearTimer, getComma, jumpTo, isEnv } from '@/utils/common';
 import { Badge, Button } from 'ant-design-vue';
-import { computed, onUnmounted, ref, watch } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useMissionStore } from '@/stores/mission';
 import RechargeIntegration from '../recharge/Integration.vue';
 import { setBurialPoint } from '@/api/burial';
@@ -153,7 +153,16 @@ function clickChangePwd() {
   emit('changePwdVisible', true);
 }
 
+const avatar = ref('');
+onMounted(async () => {
+  const info = await userStore.getUserInfo();
+  console.log('info:', info);
+  avatar.value = info.jpg_url;
+});
+
 function clickLogout() {
+  const store = useUserStore();
+  store.resetState();
   emit('logoutVisible', true);
 }
 

@@ -7,24 +7,7 @@
     mode="inline"
   >
     <template v-for="menu in menus">
-      <Menu.SubMenu v-if="menu.children" :key="menu.key" popup-class-name="sub-menu-popup">
-        <template #icon>
-          <div class="icon" :style="{ width: iconWidth }">
-            <template v-if="menu.cIcon">
-              <img :src="menu.cIcon" v-if="state.selectedKeys.includes(menu.key)" />
-              <img :src="menu.selectedIcon || menu.cIcon" v-else />
-            </template>
-            <img v-else :src="icons[`${menu.key}${state.selectedKeys.includes(menu.key) ? '-selected' : ''}`]" />
-          </div>
-        </template>
-        <template #title>
-          <span>{{ menu.label }}</span>
-        </template>
-        <Menu.Item v-for="item in menu.children" :key="item.key" @click="clickItem(item.to)">
-          <span>{{ item.label }}</span>
-        </Menu.Item>
-      </Menu.SubMenu>
-      <Menu.Item v-else v-bind="{ key: menu.key }" @click="clickItem(menu.to)">
+      <Menu.Item v-bind="{ key: menu.key }" @click="clickItem(menu.to)">
         <template #icon>
           <div class="icon" :style="{ width: iconWidth }">
             <template v-if="menu.cIcon">
@@ -42,13 +25,14 @@
 
 <script setup lang="ts">
 import { Menu } from 'ant-design-vue';
-import { reactive, watch, type StyleValue } from 'vue';
+import { reactive, watch, type StyleValue, onMounted, ref } from 'vue';
 import { icons } from '@/assets/img/layout/menu/index';
 import { useRoute, type RouteLocationRaw } from 'vue-router';
 import { setBurialPoint } from '@/api/burial';
 import { useUserStore } from '@/stores/user';
 import { useMissionStore } from '@/stores/mission';
 import router from '@/router';
+import _default from 'ant-design-vue/es/vc-slick/inner-slider';
 
 export interface IMenuItem {
   key: string;
@@ -62,28 +46,41 @@ interface IProps {
   iconWidth?: string;
   menus?: IMenuItem[];
 }
+
+const showMerchant = ref(false);
+onMounted(async () => {
+  const store = useUserStore();
+  const res = await store.getUserInfo();
+  console.log('res is', res);
+  if (res.user_type === 'merchant') {
+    menus.value = menus.value.concat(
+      {
+        key: 'product',
+        label: '产品管理',
+        to: '/product',
+      },
+      {
+        key: 'earnings',
+        label: '收益管理',
+        to: '/earnings',
+      },
+    );
+  }
+});
+
+const menus = ref([
+  { key: 'aigc', label: '产品区', to: '/aigc' },
+  { key: 'mission', label: '我的订单', to: '/order' },
+  {
+    key: 'user',
+    label: '账户管理',
+    to: '/user',
+  },
+]);
+
 const props = withDefaults(defineProps<IProps>(), {
   iconWidth: '3.125rem',
   // 注意：这里默认是 pc 的 菜单。key 唯一，且与 icon file name 一样
-  menus: () => [
-    { key: 'aigc', label: '产品区', to: '/aigc' },
-    { key: 'mission', label: '我的订单', to: '/order' },
-    {
-      key: 'user',
-      label: '账户管理',
-      to: '/user',
-    },
-    {
-      key: 'product',
-      label: '产品管理',
-      to: '/product',
-    },
-    {
-      key: 'earnings',
-      label: '收益管理',
-      to: '/earnings',
-    },
-  ],
 });
 const emit = defineEmits<{
   (event: 'clickItem', data: RouteLocationRaw): void;
@@ -97,15 +94,15 @@ const state = reactive({
   openKeys: [] as string[],
 });
 
-watch(
-  [route, () => props.menus],
-  ([{ path }, menus]) => {
-    state.selectedKeys = [];
-    state.openKeys = [];
-    findItem(path, menus);
-  },
-  { immediate: true, deep: true },
-);
+// watch(
+//   [route, () => props.menus],
+//   ([{ path }, menus]) => {
+//     state.selectedKeys = [];
+//     state.openKeys = [];
+//     findItem(path, menus);
+//   },
+//   { immediate: true, deep: true },
+// );
 
 function findItem(path: string, items: IMenuItem[], sub?: string) {
   for (let i = 0; i < items.length; i++) {

@@ -103,8 +103,6 @@
             <input-account
               placeholder="仅支持中国大陆手机号"
               v-model:value="form.phone"
-              v-model:not-exist="validation.notExistPhone"
-              v-model:code-disabled="verifycodeState.disabled"
               :check-exist-or-not="false"
               :validate-item="() => formRef?.validateFields('phone')"
               :maxlength="11"
@@ -114,13 +112,21 @@
             name="password"
             :rules="[{ required: true, message: '请输入密码' }, { validator: (_r, _v) => validatePassword(_v) }]"
           >
-            <input-password v-model:value="form.password" @press-enter="clickLogin()"></input-password>
+            <input-password
+              placeholder="请输入密码"
+              v-model:value="form.password"
+              @press-enter="clickLogin()"
+            ></input-password>
           </Form.Item>
           <Form.Item
-            name="password"
+            name="confirmPassword"
             :rules="[{ required: true, message: '请再次输入密码' }, { validator: (_r, _v) => validatePassword(_v) }]"
           >
-            <input-password v-model:value="form.password" @press-enter="clickLogin()"></input-password>
+            <input-password
+              placeholder="请再次输入密码"
+              v-model:value="form.confirmPassword"
+              @press-enter="clickLogin()"
+            ></input-password>
           </Form.Item>
         </template>
         <template v-if="loginMode === 'email-password'">
@@ -265,8 +271,15 @@
             </a>
           </div>
         </Form.Item>
-        <a href="" @click="loginMode = 'account-register'">注册</a>
-        <Button type="primary" block class="operate-btn" @click="() => clickLogin()">登 录</Button>
+        <Button
+          v-if="loginMode === 'account-register'"
+          type="primary"
+          block
+          class="operate-btn"
+          @click="() => clickRegister()"
+          >注册</Button
+        >
+        <Button v-else type="primary" block class="operate-btn" @click="() => clickLogin()">登 录</Button>
       </Form>
 
       <div class="ways" v-if="loginMode !== 'email-forget'">
@@ -312,6 +325,7 @@ import {
   formatMsg,
 } from '@/utils/common';
 import { checkQrScanStatus, getQrcode, login, type LoginData, resetEmailPassword } from '@/api/user';
+import { register } from '@/api/myUser';
 import { useRoute } from 'vue-router';
 import { useWebStore } from '@/stores/web';
 import { setBurialPoint } from '@/api/burial';
@@ -347,8 +361,10 @@ const tabs: { key: Mode; text: string; img: string; show?: boolean }[] = [
   { key: 'verify-code', text: '免密登录/注册', img: 'code-yes' },
   { key: 'account-password', text: '密码登录/注册', img: 'pw-yes' },
   { key: 'email-forget', text: '忘记密码', img: 'email' },
+  { key: 'account-register', text: '注册', img: 'register' },
 ];
 const loginWay: Record<Mode, string> = {
+  'account-register': 'register',
   'wx-scan': 'wechat',
   'verify-code': 'no_password',
   'account-password': 'password',
@@ -397,6 +413,16 @@ watch(
   },
   { immediate: true, deep: true },
 );
+
+async function clickRegister() {
+  const res = await register({ phone: form.phone, pwd: form.password, confirm_pwd: form.confirmPassword });
+  if (res.code === 20000) {
+    message.success('注册成功！');
+    changeMode('account-password');
+  } else {
+    message.error(formatMsg(res.msg));
+  }
+}
 
 function clearWxTimers() {
   clearTimer(qrcodeTimer, 'interval');

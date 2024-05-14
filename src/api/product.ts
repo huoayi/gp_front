@@ -5,5 +5,5 @@ export function addProduct(data) {
 }
 
 export function getProductList(params) {
-  return request.$Axios.get('/product', { params });
+  return request.$Axios.get('/product', params);
 }

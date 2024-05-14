@@ -77,7 +77,7 @@ export function resetEmailPassword(data: { email: string; code: string; pwd: str
 }
 
 export function getUserInfo() {
-  return request.$Axios.get('/user/info');
+  return request.$Axios.get('/user-info');
 }
 
 export function getHmackey() {

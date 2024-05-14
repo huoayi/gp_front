@@ -148,7 +148,7 @@ class Request {
           } else {
             const digit = Math.round(code / 10000);
             if (digit === 5) {
-              message.error('服务异常，请稍后再尝试！');
+              // message.error('服务异常，请稍后再尝试！');
               return Promise.reject(res.data);
             } else if ([3, 4].includes(digit) && msg) {
               const { url } = res.config;
@@ -260,7 +260,7 @@ class Request {
           message = '您没有权限操作！';
           break;
         case 404:
-          message = `请求地址出错: ${err.config?.url}`;
+          // message = `请求地址出错: ${err.config?.url}`;
           break; // 在正确域名下
         case 408:
           message = '请求超时！';

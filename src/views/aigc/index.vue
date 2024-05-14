@@ -44,49 +44,23 @@
           <span>请诚信交流！若有不实则封号处理</span>
         </div>
 
-        <div class="app-list" v-if="appList.some((i) => i.key && workAppList?.includes(i.key))">
-          <template v-for="item in appList">
-            <div
-              v-if="item.key && workAppList?.includes(item.key)"
-              class="app-list-item cursor-pointer used-img"
-              @click="beforeOperation(() => clickApp(item))"
-            >
+        <div class="app-list">
+          <template v-for="item in workAppList">
+            <div class="app-list-item cursor-pointer used-img" @click="beforeOperation(() => clickApp(item))">
               <div class="top">
                 <div class="intro-img">
                   <div class="item-img">
-                    <img :src="chooseImgs[item.fileName]" alt="" />
-                    <div class="stamp-text" v-if="item.stampText">
-                      <span>{{ item.stampText }}</span>
-                    </div>
+                    <img :src="item.jpg_url" alt="" />
                   </div>
-                  <span class="title">{{ item.text }}</span>
-                  <span class="describe">{{ item.subText }}</span>
+                  <span class="title">{{ item.product_name }}</span>
+                  <span class="title" style="font-size: small">价格: ¥{{ item.price }}</span>
+                  <span class="describe">{{ item.comment }}</span>
                 </div>
               </div>
               <p class="tip-text">使用期间如有问题可通过页面右下角进群咨询</p>
             </div>
             <!-- 官方应用展示即将上线，社区镜像不展示 -->
-            <div v-else-if="tabKey === 'offical'" class="app-list-item unused">
-              <div class="intro-img">
-                <img class="item-img" :src="chooseImgs[item.fileName]" alt="" />
-                <span class="title">{{ item.text }}</span>
-                <span class="describe">{{ item.subText }}</span>
-              </div>
-              <div class="disabled-btn">
-                <Button disabled>即将上线</Button>
-              </div>
-            </div>
           </template>
-        </div>
-
-        <!-- 空状态 -->
-        <div class="none-app" v-else-if="tabKey === 'community'">
-          <img src="@/assets/img/aigc/communityApp/mirror-none.png" />
-          <span>暂无镜像</span>
-        </div>
-        <div class="none-app" v-else-if="tabKey === 'offical'">
-          <img src="@/assets/img/mission/run-none.png" />
-          <span>暂无应用</span>
         </div>
       </div>
 
@@ -94,316 +68,31 @@
         :visible="modalState.visible"
         @update:visible="closeVisible"
         width="53.125rem"
-        title="创建新应用"
+        title="购买"
         :class-name="webStore.getClassName('aigc-choose')"
         :full-modal="!webStore.isPc"
         class="common-aigc-choose-wrapper"
       >
         <div class="create-content-container common-content-container">
-          <div class="little-title">第一步：选择应用</div>
-          <SingleLineDragCard
-            containerId="choose-app-drag-card"
-            :towards-type="webStore.isPc ? 'circle-btn-away-icon' : 'none'"
-            :initial-index="dragCardIndex"
-          >
-            <swiper-slide
-              v-for="item in appList.filter((item) => item.key && !item.perch && workAppList?.includes(item.key))"
-            >
-              <div
-                class="app-item cursor-pointer"
-                :class="{ chosen: item.key === modalState.activeKey }"
-                @click="chooseApp(item)"
-              >
-                <div class="img">
-                  <img :src="chooseImgs[item.fileName]" alt="" />
-                  <div class="stamp-text" v-if="item.stampText">
-                    <span>{{ item.stampText }}</span>
-                  </div>
-                </div>
-                <span class="name">{{ item.text }}</span>
-                <span class="describe">{{ item.subText }}</span>
-              </div>
-            </swiper-slide>
-          </SingleLineDragCard>
-          <div class="little-title">第二步：选择使用方式</div>
-          <div class="choose-way" v-if="modalState.activeKey">
-            <div
-              v-for="item in useWays[modalState.activeKey]"
-              class="way-item cursor-pointer"
-              :class="{ active: modalState.useActiveKey === item }"
-              @click="chooseUseWay(item)"
-            >
-              <div class="hover-bg"></div>
-              <div class="name">
-                <img :src="modalAppImgs[useWayIntros[item].imgName]" alt="" /><span>{{ useWayIntros[item].text }}</span>
-              </div>
-              <div class="describe">{{ useWayIntros[item].subText }}</div>
-            </div>
-          </div>
-          <template v-if="appVersionList">
-            <div class="little-title">第三步：选择应用版本</div>
-            <div class="choose-version">
-              <Select
-                v-model:value="modalState.versionActiveKey"
-                :getPopupContainer="(triggerNode) => triggerNode.parentNode"
-                :dropdown-match-select-width="false"
-                class="base-select charge-mode-select"
-                placeholder="请选择应用版本"
-                @change="chooseVersionActiveKey"
-              >
-                <Select.Option v-for="item in appVersionList" :key="item.type" :value="item.type">
-                  <span>{{ item.text }}</span>
-                </Select.Option>
-              </Select>
-            </div>
-          </template>
-          <div class="little-title not-margin-bottom">
-            <span>
-              第{{ appVersionList ? '四' : '三' }}步：选择 {{ modalState.activeKey === 'ASCEND' ? 'NPU' : 'GPU' }} 性能
-            </span>
-            <Tooltip :overlay-style="{ maxWidth: '17.5rem' }">
-              <template #title>
-                <div class="commom-aigc-tooltip-title">
-                  <p>1. API 模式下，您所选择的是最低性能标准</p>
-                  <p>2. 如遇选择的型号满载时，会用更高型号 GPU 完成绘图任务</p>
-                </div>
-              </template>
-              <div v-if="modalState.useActiveKey === 'hold'" class="hover-icon-display-wrapper tip-png cursor-pointer">
-                <img src="@/assets/img/tip.png" alt="" class="icon-d" />
-                <img src="@/assets/img/tip-hover.png" alt="" class="hover-icon" />
-              </div>
-            </Tooltip>
-          </div>
-          <component
-            class="gpu-list"
-            :class="{ 'not-pc-gpu-list': !webStore.isPc }"
-            container-id="choose-gpu-drag-card"
-            :item-height="163"
-            :toward-item-spacing="12"
-            :container-style="{ padding: '.75rem .1875rem' }"
-            :towards-type="webStore.isPc ? 'btn-inset-icon' : 'none'"
-            :is="webStore.isPc ? SingleLineDragCard : 'div'"
-            :initial-index="gpuDragCardIndex"
-          >
-            <component :is="webStore.isPc ? SwiperSlide : 'div'" v-for="(item, index) in workGpuList">
-              <div
-                class="gpu-item"
-                :class="getGpuItemClassName(item)"
-                :style="{ marginRight: webStore.isPc && index !== workGpuList.length - 1 ? '.75rem' : undefined }"
-                @click="chooseGpu(item)"
-              >
-                <div class="hover-bg">
-                  <span class="hot-icon" v-if="item.isHotGpu">HOT</span>
-                </div>
-                <div class="sold-out">
-                  <img src="@/assets/img/aigc/gpu/sold-out.png" />
-                </div>
-                <div class="item-content">
-                  <div class="img">
-                    <img src="@/assets/img/aigc/gpu/rtx-icon.png" v-if="item.type === 'RTX'" />
-                    <img src="@/assets/img/aigc/gpu/nvidia-icon.png" v-else-if="item.type === 'NVIDIA'" />
-                    <img src="@/assets/img/aigc/gpu/cep-I-icon.webp" v-else-if="item.type === 'ComputilityKing-I'" />
-                    <img src="@/assets/img/aigc/gpu/ascend-icon.png" v-else-if="item.type === 'Ascend'" />
-                  </div>
-                  <h6>{{ item.text }}</h6>
-                  <p>
-                    {{ gpuPerformaceMapping[item.version]?.text }}
-                  </p>
-                  <div class="line">
-                    <span></span>
-                  </div>
-                </div>
-              </div>
-            </component>
-          </component>
-          <div class="gpu-detail">
-            <div class="item">
-              <div class="data">
-                <span>{{ modalState.gpuDetail.videoMemory }}</span> GB
-              </div>
-              <span>显存</span>
-            </div>
-            <div class="item">
-              <div class="data">
-                <span>{{ modalState.gpuDetail.cpu }}</span> 核
-              </div>
-              <span>CPU</span>
-            </div>
-            <div class="item">
-              <div class="data">
-                <span>{{ modalState.gpuDetail.memory }}</span> GB
-              </div>
-              <span>内存</span>
-            </div>
-          </div>
-          <div class="little-title">第{{ appVersionList ? '五' : '四' }}步：选择计费方式</div>
-          <div class="charge-mode flex-center">
-            <Select
-              v-model:value="modalState.billingType"
-              :getPopupContainer="(triggerNode) => triggerNode.parentNode"
-              :dropdown-match-select-width="false"
-              class="base-select charge-mode-select"
-              placeholder="请选择计费方式"
-              @change="chooseBillingType"
-            >
-              <Select.Option v-for="item in gpuDiscountList" :key="item.value" :value="item.value">
-                <span>{{ item.label }}</span>
-                <template v-if="item.discount">
-                  <img
-                    class="fire-img"
-                    v-if="item.value === 'time_plan_month'"
-                    src="@/assets/img/aigc/modalApp/fire.png"
-                    alt=""
-                  />
-                  <div class="discount" :class="{ 'discount-month': item.value === 'time_plan_month' }">
-                    <span>{{ item.discount }} 折</span>
-                  </div>
-                </template>
-              </Select.Option>
-            </Select>
-            <Tooltip :overlay-style="{ maxWidth: '17.5rem' }">
-              <template #title>
-                <div class="commom-aigc-tooltip-title">
-                  <p>1. 按实际算力消耗量计费</p>
-                  <p>2. 可在我的应用中随时进行关闭</p>
-                  <p>3. 需要账户余额大于等于 {{ convertToCEP(minAccount.hold) }} 脑力值</p>
-                </div>
-              </template>
-              <div v-if="modalState.useActiveKey === 'hold'" class="hover-icon-display-wrapper tip-png cursor-pointer">
-                <img src="@/assets/img/tip.png" alt="" class="icon-d" />
-                <img src="@/assets/img/tip-hover.png" alt="" class="hover-icon" />
-              </div>
-            </Tooltip>
-          </div>
-          <template v-if="showTimeBilling && modalState.billingType">
-            <div class="little-title">第{{ appVersionList ? '六' : '五' }}步：选择购买时长</div>
-            <div class="purchase-duration">
-              <Select
-                v-model:value="modalState.purchaseTime"
-                :getPopupContainer="(triggerNode) => triggerNode.parentNode"
-                :dropdown-match-select-width="false"
-                class="base-select purchase-duration-select"
-                placeholder="请选择购买时长"
-              >
-                <template v-if="modalState.billingType">
-                  <Select.Option v-for="item in purchaseTimes[modalState.billingType]?.time" :value="item" :key="item">
-                    {{ item }} {{ purchaseTimes[modalState.billingType].unit }}
-                  </Select.Option>
-                </template>
-              </Select>
-              <Checkbox id="automatic-renewal" class="check-box" v-model:checked="modalState.automaticRenewal" />
-              <label for="automatic-renewal" class="automatic-renewal">
-                <span>自动续费</span>
-              </label>
-              <Tooltip :overlay-style="{ maxWidth: '17.5rem' }">
-                <template #title>
-                  <div class="commom-aigc-tooltip-title">
-                    <p>1. 应用到期后自动减扣账户余额进行续费</p>
-                    <p>2. 可在我的应用中随时进行关闭</p>
-                    <p>3. 自动续费需要账户余额大于等于 {{ convertToCEP(minAccount.renewal) }} 脑力值</p>
-                  </div>
-                </template>
-                <div class="hover-icon-display-wrapper tip-png cursor-pointer">
-                  <img src="@/assets/img/tip.png" alt="" class="icon-d" />
-                  <img src="@/assets/img/tip-hover.png" alt="" class="hover-icon" />
-                </div>
-              </Tooltip>
-            </div>
-          </template>
-          <div class="little-title">
-            第{{
-              appVersionList
-                ? showTimeBilling && modalState.billingType
-                  ? '七'
-                  : '六'
-                : showTimeBilling && modalState.billingType
-                ? '六'
-                : '五'
-            }}步：选择应用数量
-          </div>
-          <div class="choose-number">
-            <Button
-              @click="modalState.num--"
-              :disabled="modalState.num === 1"
-              :class="{ disabled: modalState.num === 1 }"
-            >
-              <img src="@/assets/img/aigc/modalApp/subtract.png" />
-            </Button>
-            <InputNumber v-model:value="modalState.num" class="number" :controls="false" :min="1" :max="CEP_MAX">
-            </InputNumber>
-            <Button
-              @click="modalState.num++"
-              :disabled="modalState.num === CEP_MAX"
-              :class="{ disabled: modalState.num === CEP_MAX }"
-            >
-              <img src="@/assets/img/aigc/modalApp/plus.png" />
-            </Button>
-          </div>
+          <div class="little-title">第一步：核对订单信息</div>
+          <a-card size="small" :title="nowItem.product_name" style="width: 300px">
+            <p>价格：¥{{ nowItem.price }}</p>
+            <p>商品ID：{{ nowItem.id }}</p>
+            <p>描述：{{ nowItem.comment }}</p>
+          </a-card>
+          <div class="little-title">第二步：去付款</div>
+          <img src="@/assets/img/aigc/wechatPay.png" alt="" style="width: 150px; height: 150px" />
+          <div class="little-title">第三步：通知卖方</div>
+          <span>付款完成后，点击“已付款，通知卖家"按钮，以便卖家发货。</span>
         </div>
         <div class="buy-now-container">
           <div class="show-price">
             <div class="cost">
-              <span class="title">配置费用：</span>
-              <span class="probably-text" v-if="modalState.useActiveKey === 'hold'">约合</span>
-              <img src="@/assets/img/cep.png" alt="" />
-              <span class="red cep-num">{{ getComma(convertToCEP(costUnitValue), 'auto') }}</span>
-              <span>脑力值 / {{ unitText }}</span>
-
-              <Tooltip :overlay-style="{ maxWidth: '17.5rem' }">
-                <template #title>
-                  <div class="commom-aigc-tooltip-title">
-                    <p>1. 显示的费用为估算的均值</p>
-                    <p>2. 实际消耗脑力值数量，将由实际生成图片大小和处理方式决定</p>
-                  </div>
-                </template>
-                <div v-if="modalState.useActiveKey === 'hold'" class="hover-icon-display-wrapper cursor-pointer tips">
-                  <img src="@/assets/img/tip.png" alt="" class="icon-d" />
-                  <img src="@/assets/img/tip-hover.png" alt="" class="hover-icon" />
-                </div>
-              </Tooltip>
-              <span class="price-all">( 折合</span>
-              <div class="rmb">
-                <span class="red">&nbsp;¥ {{ getComma(transferCepToRMB(costUnitValue), 'auto') }}&nbsp;</span>
-                / {{ unitText }} )
-              </div>
-              <span
-                class="discount"
-                v-if="sumState.discount"
-                :class="{ 'discount-month': modalState.billingType === 'time_plan_month' }"
-              >
-                {{ sumState.discount }} 折
-              </span>
-            </div>
-            <div class="balance">
-              <span class="title">账户余额：{{ getComma(balanceStore.showValue) }} 脑力值</span>
-              <div
-                class="hover-icon-display-wrapper"
-                @click="
-                  () => {
-                    nearBybalanceGotoRecharge();
-                    clickGotoRecharge();
-                  }
-                "
-              >
-                <span>去购买</span>
-                <img src="@/assets/img/goto.png" alt="" class="icon-d" />
-                <img src="@/assets/img/goto-hover.png" class="hover-icon" />
-              </div>
+              <span class="title">费用：¥{{ nowItem.price }}</span>
             </div>
           </div>
-          <Button type="primary" v-if="canUse" @click="makeMissions" :loading="useLoading">立即使用</Button>
-          <Button
-            type="primary"
-            danger
-            v-else
-            @click="
-              () => {
-                cantUseGotoRecharge();
-                clickGotoRecharge();
-              }
-            "
-            >去购买</Button
-          >
+          <Button type="primary" v-if="createOrderFinished" @click="confirmPay" :loading="useLoading">已经付款</Button>
+          <Button type="primary" danger v-else @click="createOrder">下订单</Button>
         </div>
       </Modal>
 
@@ -433,6 +122,41 @@
           </div>
         </div>
       </Modal>
+      <a-modal v-model:open="showAddModal" title="填写下单信息" @ok="confirmAdd">
+        <a-form
+          :model="newOrderForm"
+          name="basic"
+          :label-col="{ span: 8 }"
+          :wrapper-col="{ span: 16 }"
+          autocomplete="off"
+          @finish="onFinish"
+          @finishFailed="onFinishFailed"
+          centered="true"
+        >
+          {{ focusItem }}
+          <a-form-item label="商品名称" name="name">
+            {{ focusItem.product_name }}
+          </a-form-item>
+          <a-form-item label="商品ID" name="comment">
+            {{ focusItem.id }}
+          </a-form-item>
+          <a-form-item label="单价" name="comment">
+            {{ focusItem.price }}
+          </a-form-item>
+          <a-form-item label="数量" name="unit">
+            <a-input v-model:value="newOrderForm.count" />
+          </a-form-item>
+          <a-form-item label="总价格" name="price">
+            {{ focusItem.price * newOrderForm.count }}
+          </a-form-item>
+          <a-form-item label="地址" name="price">
+            <a-input v-model:value="newOrderForm.address" />
+          </a-form-item>
+          <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
+            <a-button type="primary" html-type="submit">Submit</a-button>
+          </a-form-item>
+        </a-form>
+      </a-modal>
     </section>
   </Spin>
 </template>
@@ -497,6 +221,8 @@ import { useRouter, useRoute } from 'vue-router';
 import { useConfigurationStore } from '@/stores/configuration';
 import { setBurialPoint } from '@/api/burial';
 import type { aigcBannerEvent } from '@/interface/common';
+import { getProductList } from '@/api/product';
+import { addOrder, confirmPayOrder } from '@/api/order';
 
 const userStore = useUserStore();
 const balanceStore = useBalanceStore();
@@ -504,6 +230,60 @@ const missionStore = useMissionStore();
 const webStore = useWebStore();
 const router = useRouter();
 const route = useRoute();
+
+const newOrderId = ref('');
+const createOrderFinished = ref(false);
+const focusItem = ref({});
+const newOrderForm = ref({
+  products_id: '',
+  count: 0,
+  amount: 0,
+  address: '',
+});
+async function confirmPay() {
+  const res = await confirmPayOrder({ order_id: newOrderId.value });
+  if (res.code === 20000) {
+    message.success('完成订单');
+    createOrderFinished.value = false;
+    closeVisible();
+  } else {
+    message.error('支付失败');
+  }
+}
+async function onFinish() {
+  const res = await addOrder({
+    product_id: nowItem.value.id,
+    count: Number(newOrderForm.value.count),
+    amount: focusItem.value.price * newOrderForm.value.count,
+    address: newOrderForm.value.address,
+  });
+  if (res.code === 20000) {
+    message.success('下单成功');
+    createOrderFinished.value = true;
+    //todo 塞id
+    newOrderId.value = res.data.id;
+    resetOrderModal();
+  } else {
+    message.error('下单失败');
+  }
+}
+function onFinishFailed() {
+  console.log('onFinishFailed');
+}
+const showAddModal = ref(false);
+function confirmAdd() {
+  console.log('confirmAdd');
+}
+async function createOrder() {
+  showAddModal.value = true;
+}
+function resetOrderModal() {
+  newOrderForm.value.products_id = '';
+  newOrderForm.value.count = 0;
+  newOrderForm.value.amount = 0;
+  newOrderForm.value.address = '';
+  showAddModal.value = false;
+}
 
 //#region state
 const defaultModalState = {
@@ -533,6 +313,7 @@ interface IModalState extends ICreateMissionData {
   h100Visible: boolean;
   apiVisible: boolean;
 }
+const nowItem = ref({});
 const modalState = reactive<IModalState>({ ...defaultModalState });
 const classifyList = computed(() => {
   const list = tabKey.value === 'community' ? communityClassifyList : officalClassifyList;
@@ -547,7 +328,7 @@ const appList = computed(() => {
 });
 const chooseImgs = computed(() => (tabKey.value === 'community' ? communityAppImgs : officalAppImgs));
 const appVersionList = ref<IAppItem['children']>(); // 要么数组有项，要么 undefined
-const workAppList = ref<CategoryType[]>();
+const workAppList = ref({});
 const workAppGpuList = ref<Partial<{ [key in CategoryType]: string[] }>>();
 const spinning = ref(false);
 const useLoading = ref(false);
@@ -656,17 +437,9 @@ const clickBanner = (index: number, func?: Function) => {
 };
 
 const clickApp = (item: IAppItem) => {
-  // 埋点
-  setBurialPoint({
-    creator: userStore.userInfo?.userId as string,
-    type: 'click_app',
-    body: { phone: userStore.userInfo?.phone, applicaton: item.text },
-  });
-  if (item.key === 'H100_SERVER') {
-    modalState.h100Visible = true;
-  } else {
-    openModal(item);
-  }
+  nowItem.value = item;
+  focusItem.value = item;
+  openModal(item);
 };
 
 function openNodeRecruit() {
@@ -1045,12 +818,16 @@ function clickRechargeBack() {
 }
 
 async function _getCategories() {
-  spinning.value = true;
-  const result = await getCategories();
-  workAppList.value = (result.data || []).map((item: any) => item.mission_category);
-  // todo：手动添加
-  workAppList.value?.push('H100_SERVER');
-  spinning.value = false;
+  // spinning.value = true;
+  // const result = await getCategories();
+  // workAppList.value = (result.data || []).map((item: any) => item.mission_category);
+  // // todo：手动添加
+  // workAppList.value?.push('H100_SERVER');
+  // spinning.value = false;
+  const res = await getProductList({ page_index: 1, page_size: 100 });
+  const list = res.data.list;
+  console.log('list', list);
+  workAppList.value = list;
 }
 
 async function _getAppGpuList() {
