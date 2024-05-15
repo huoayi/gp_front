@@ -82,7 +82,7 @@ const columns = [
   },
   {
     id: 'amount',
-    title: '总价',
+    title: '总价（分）',
     dataIndex: 'amount',
   },
   {

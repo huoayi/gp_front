@@ -39,7 +39,7 @@
         ><a-upload
           v-model:file-list="fileList"
           name="file"
-          action="http://10.63.10.19:8040/v1/set-photo"
+          action="http://127.0.0.1:8040/v1/set-photo"
           :headers="token"
           @change="handleChange"
         >
@@ -75,7 +75,7 @@
         ><a-upload
           v-model:file-list="userFileList"
           name="file"
-          action="http://10.63.10.19:8040/v1/set-photo"
+          action="http://127.0.0.1:8040/v1/set-photo"
           :headers="token"
           @change="handleUserChange"
         >

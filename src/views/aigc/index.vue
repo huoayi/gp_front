@@ -53,7 +53,7 @@
                     <img :src="item.jpg_url" alt="" />
                   </div>
                   <span class="title">{{ item.product_name }}</span>
-                  <span class="title" style="font-size: small">价格: ¥{{ item.price }} 单位：{{ item.unit }}</span>
+                  <span class="title" style="font-size: small">价格: ¥{{ item.price/100 }} 单位：{{ item.unit }}</span>
                   <span class="describe">{{ item.comment }}</span>
                 </div>
               </div>
@@ -76,7 +76,7 @@
         <div class="create-content-container common-content-container">
           <div class="little-title">第一步：核对订单信息</div>
           <a-card size="small" :title="nowItem.product_name" style="width: 300px">
-            <p>价格：¥{{ nowItem.price }}</p>
+            <p>价格：¥{{ nowItem.price/100 }}</p>
             <p>商品ID：{{ nowItem.id }}</p>
             <p>描述：{{ nowItem.comment }}</p>
           </a-card>
@@ -86,11 +86,7 @@
           <span>付款完成后，点击“已付款，通知卖家"按钮，以便卖家发货。</span>
         </div>
         <div class="buy-now-container">
-          <div class="show-price">
-            <div class="cost">
-              <span class="title">费用：¥{{ nowItem.price }}</span>
-            </div>
-          </div>
+
           <Button type="primary" v-if="createOrderFinished" @click="confirmPay" :loading="useLoading">已经付款</Button>
           <Button type="primary" danger v-else @click="createOrder">下订单</Button>
         </div>
@@ -139,7 +135,7 @@
           <a-form-item label="商品ID" name="comment">
             {{ focusItem.id }}
           </a-form-item>
-          <a-form-item label="单价" name="comment">
+          <a-form-item label="单价（分）" name="comment">
             {{ focusItem.price }}
           </a-form-item>
           <a-form-item label="单位" name="comment">
@@ -148,7 +144,7 @@
           <a-form-item label="数量" name="unit">
             <a-input v-model:value="newOrderForm.count" />
           </a-form-item>
-          <a-form-item label="总价格" name="price">
+          <a-form-item label="总价格（分）" name="price">
             {{ focusItem.price * newOrderForm.count }}
           </a-form-item>
           <a-form-item label="地址" name="price">

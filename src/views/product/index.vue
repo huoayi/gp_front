@@ -92,7 +92,8 @@
           ><a-upload
             v-model:file-list="fileList"
             name="file"
-            action="http://10.63.10.19:8040/v1/set-photo"
+            action="http://127.0.0.1:8040/v1/set-photo"
+
             :headers="token"
             @change="handleChange"
           >
@@ -170,8 +171,13 @@ const columns = [
     dataIndex: 'comment',
   },
   {
+    id: 'unit',
+    title: '单位',
+    dataIndex: 'unit',
+  },
+  {
     id: 'price',
-    title: '价格',
+    title: '价格（分）/单位',
     dataIndex: 'price',
     customFilterDropdown: true,
     onFilter: (value, record) => {
