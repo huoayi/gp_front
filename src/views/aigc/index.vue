@@ -8,7 +8,6 @@
             :key="item.name"
             class="banner-item"
             :class="{ 'cursor-pointer': !!item.func }"
-            @click="clickBanner(index, item.func)"
           >
             <img v-if="webStore.isPc" :src="bannerImages[item.name]" :alt="item.alt" />
             <img v-else :src="bannerImages[`wap-${item.name}`]" :alt="item.alt" />

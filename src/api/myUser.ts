@@ -11,3 +11,7 @@ export function becomeMerchant(data) {
 export function editUserInfo(data) {
   return request.$Axios.put('/user-info', data);
 }
+
+export function getMerchantInfo() {
+  return request.$Axios.get('/merchant-info');
+}

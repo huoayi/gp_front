@@ -13,6 +13,13 @@
       <a-button style="margin-top: 20px" @click="showEditModal = true">修改个人信息</a-button>
     </a-card>
   </div>
+  <div style="padding: 30px">
+    <a-card title="商户信息" v-if="userInfo.role == 'merchant'" :bordered="false" style="width: 300px">
+      <p>商户店名：{{ merchantInfo.merchantName }}</p>
+      <p>所在省份：{{ merchantInfo.provence }}</p>
+      <p>店铺描述：{{ merchantInfo.comment }}</p>
+    </a-card>
+  </div>
   <a-modal v-model:open="showAddModal" title="成为商户" @ok="confirmAdd">
     <a-form
       :model="newMerchantForm"
@@ -39,7 +46,7 @@
         ><a-upload
           v-model:file-list="fileList"
           name="file"
-          action="http://127.0.0.1:8040/v1/set-photo"
+          action="http://10.63.10.19:8040/v1/set-photo"
           :headers="token"
           @change="handleChange"
         >
@@ -75,7 +82,7 @@
         ><a-upload
           v-model:file-list="userFileList"
           name="file"
-          action="http://127.0.0.1:8040/v1/set-photo"
+          action="http://10.63.10.19:8040/v1/set-photo"
           :headers="token"
           @change="handleUserChange"
         >
@@ -97,7 +104,7 @@ import { reactive, ref } from 'vue';
 import { onMounted } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { message } from 'ant-design-vue';
-import { becomeMerchant, editUserInfo } from '@/api/myUser';
+import { becomeMerchant, editUserInfo, getMerchantInfo } from '@/api/myUser';
 
 const userStore = useUserStore();
 const provences = [
@@ -135,6 +142,13 @@ const provences = [
 const fileList = ref([]);
 const userFileList = ref([]);
 const showAddModal = ref(false);
+
+const merchantInfo = ref({
+  merchantName: '',
+  provence: '',
+  comment: '',
+});
+
 const userInfo = ref({
   phone: null,
   name: null,
@@ -184,6 +198,8 @@ async function onFinish() {
   console.log('res', res);
   if (res.code === 20000) {
     message.success('成为商户成功');
+    const merchantToken = res.data.merchant_token;
+    userStore.setMerchantToken('Bearer ' + merchantToken);
     showAddModal.value = false;
   } else {
     message.error('添加失败');
@@ -226,6 +242,15 @@ onMounted(async () => {
     nickName,
     role,
   };
+  if (userInfo.value.role === 'merchant') {
+    const res = await getMerchantInfo();
+    const { merchant_name: merchantName, provence, comment } = res.data;
+    merchantInfo.value = {
+      merchantName,
+      provence,
+      comment,
+    };
+  }
 });
 </script>
 

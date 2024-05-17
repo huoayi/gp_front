@@ -94,6 +94,18 @@ const columns = [
     id: 'status',
     title: '状态',
     dataIndex: 'status',
+    customFilterDropdown: true,
+    onFilter: (value, record) => {
+      return record.status.toString().toLowerCase().includes(value.toLowerCase());
+    },
+    onFilterDropdownOpenChange: (visible) => {
+      console.log(3, visible);
+      if (visible) {
+        setTimeout(() => {
+          searchInput.value.focus();
+        }, 100);
+      }
+    },
   },
 ];
 const dataSource = ref([]);
